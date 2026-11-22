@@ -104,6 +104,41 @@ public sealed class Phase1bTests(PublicServicesFactory factory) : IClassFixture<
         Assert.Equal(HttpStatusCode.NotFound, draft.StatusCode);
     }
 
+    [Fact]
+    public async Task PublicLinksOpenEnquiriesAndRouteEachCategoryToItsConfiguredInbox()
+    {
+        await using var routingFactory = new PublicServicesFactory();
+        await routingFactory.InitializeDatabaseAsync();
+        using var client = routingFactory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        var home = await new HtmlParser().ParseDocumentAsync(await client.GetStringAsync("/"));
+        var complaint = Assert.Single(home.QuerySelectorAll("#cruelty a[href^='mailto:']"));
+        Assert.Contains("Send a cruelty complaint", complaint.TextContent);
+        Assert.DoesNotContain("@", home.QuerySelector("#cruelty")!.TextContent);
+        Assert.Empty(home.QuerySelectorAll("#cruelty img"));
+
+        var categories = new[] { "waltloo", "centurion", "clinic-waltloo", "clinic-centurion", "sponsorship" };
+        foreach (var category in categories)
+        {
+            var route = $"/enquiries/{category}";
+            Assert.NotNull(home.QuerySelector($"a[href='{route}']"));
+            var form = await ReadFormAsync(client, route);
+            var visitor = $"{category}-visitor@example.test";
+            form["Form.Name"] = "Test visitor";
+            form["Form.Email"] = visitor;
+            form["Form.Message"] = "Testing the public contact route.";
+            form["Form.Consent"] = "true";
+            using var accepted = await PostAsync(client, route, form);
+            Assert.Equal(HttpStatusCode.Redirect, accepted.StatusCode);
+            Assert.Contains("Your enquiry was received", await client.GetStringAsync(accepted.Headers.Location));
+        }
+
+        foreach (var inbox in categories)
+        {
+            var message = await routingFactory.Mail.WaitForAsync(mail => mail.ReplyTo == $"{inbox}-visitor@example.test");
+            Assert.Equal($"{inbox}@example.test", message.To);
+        }
+    }
+
     private HttpClient CreateClient() =>
         factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 

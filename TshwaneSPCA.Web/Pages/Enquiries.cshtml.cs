@@ -93,6 +93,11 @@ public sealed class EnquiriesModel(PublicData database, MailSettings mail, Outbo
             "general" => ("General enquiry", mail.GeneralTo),
             "volunteer" => ("Volunteering enquiry", mail.VolunteerTo),
             "donations" => ("Donation or sponsorship enquiry", mail.DonationsTo),
+            "waltloo" => ("Waltloo branch enquiry", mail.WaltlooTo ?? mail.GeneralTo),
+            "centurion" => ("Centurion branch enquiry", mail.CenturionTo ?? mail.GeneralTo),
+            "clinic-waltloo" => ("Waltloo clinic enquiry", mail.WaltlooClinicTo ?? mail.WaltlooTo ?? mail.GeneralTo),
+            "clinic-centurion" => ("Centurion clinic enquiry", mail.CenturionClinicTo ?? mail.CenturionTo ?? mail.GeneralTo),
+            "sponsorship" => ("Sponsor a kennel enquiry", mail.SponsorshipTo ?? mail.DonationsTo),
             _ => ("", null)
         };
         Title = title;

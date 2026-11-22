@@ -240,26 +240,6 @@
     "contentSha256": "286418732e067b45329afc1be4e8f8f8c289dca9f94de7f662982732451fa87f"
   },
   {
-    "section": "cruelty",
-    "element": "img[src]",
-    "label": "Animal cruelty complaints reporting poster with email address",
-    "sourceMime": "image/jpeg",
-    "sourceUriSha256": "965a63114ef1ff353d06310b9053045998dbb4be2aa266207cd7a7b14c80736a",
-    "sourceContentSha256": "42f3920955c3ae20e709bcba77789d6a84be29c4508e459b56defca86243f63b",
-    "url": "/assets/animal-cruelty-reporting.jpg",
-    "contentSha256": "42f3920955c3ae20e709bcba77789d6a84be29c4508e459b56defca86243f63b"
-  },
-  {
-    "section": "cruelty",
-    "element": "a[href]",
-    "label": "\u2b07 Save poster",
-    "sourceMime": "image/jpeg",
-    "sourceUriSha256": "965a63114ef1ff353d06310b9053045998dbb4be2aa266207cd7a7b14c80736a",
-    "sourceContentSha256": "42f3920955c3ae20e709bcba77789d6a84be29c4508e459b56defca86243f63b",
-    "url": "/assets/animal-cruelty-reporting.jpg",
-    "contentSha256": "42f3920955c3ae20e709bcba77789d6a84be29c4508e459b56defca86243f63b"
-  },
-  {
     "section": "emergency",
     "element": "img[src]",
     "label": "Tshwane SPCA emergency numbers for Waltloo and Centurion branches",

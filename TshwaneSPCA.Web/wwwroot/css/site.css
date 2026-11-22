@@ -1176,10 +1176,8 @@ h3 {
 .cruelty-contact-title {
   font-size: 1.8rem;
 }
-.cruelty-contact-link {
-  overflow-wrap: anywhere;
-  font-weight: 800;
-  font-size: 1.15rem;
+#cruelty .btn {
+  color: var(--navy);
 }
 .emergency-number {
   font-size: 1.4rem;

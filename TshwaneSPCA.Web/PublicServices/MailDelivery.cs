@@ -15,6 +15,20 @@ public sealed class MailSettings
     public string GeneralTo { get; init; } = "";
     public string VolunteerTo { get; init; } = "";
     public string DonationsTo { get; init; } = "";
+    public string? WaltlooTo { get; init; }
+    public string? CenturionTo { get; init; }
+    public string? WaltlooClinicTo { get; init; }
+    public string? CenturionClinicTo { get; init; }
+    public string? SponsorshipTo { get; init; }
+    public string ComplaintTo { get; init; } = "inspectorcontroller@spcapta.org.za";
+    public string VolunteerApplicationsTo { get; init; } = "admin@spcapta.org.za";
+    public string? VolunteerApplicationsCc { get; init; } = "chairperson@spcapta.org.za";
+
+    public string ComplaintLink => $"mailto:{EncodeMailbox(ComplaintTo)}?subject=Animal%20Cruelty%20Complaint";
+
+    public string VolunteerApplicationLink => $"mailto:{EncodeMailbox(VolunteerApplicationsTo)}?subject=Completed%20Volunteer%20Application"
+        + (string.IsNullOrWhiteSpace(VolunteerApplicationsCc) ? "" : $"&cc={Uri.EscapeDataString(VolunteerApplicationsCc)}");
+
     public string SmtpHost { get; init; } = "localhost";
     public int SmtpPort { get; init; } = 1025;
     public string ResendApiKey { get; init; } = "";
@@ -23,13 +37,19 @@ public sealed class MailSettings
 
     public bool IsValid()
     {
+        if (!IsEmail(ComplaintTo) || !IsEmail(VolunteerApplicationsTo) ||
+            (!string.IsNullOrEmpty(VolunteerApplicationsCc) && !IsEmail(VolunteerApplicationsCc)))
+            return false;
+
         if (!Enabled)
             return true;
 
         if (!Uri.TryCreate(PublicUrl, UriKind.Absolute, out var url) ||
             url.AbsolutePath != "/" || url.Query.Length > 0 || url.Fragment.Length > 0 ||
             url.UserInfo.Length > 0 ||
-            !IsEmail(From) || !IsEmail(GeneralTo) || !IsEmail(VolunteerTo) || !IsEmail(DonationsTo))
+            !IsEmail(From) || !IsEmail(GeneralTo) || !IsEmail(VolunteerTo) || !IsEmail(DonationsTo) ||
+            new[] { WaltlooTo, CenturionTo, WaltlooClinicTo, CenturionClinicTo, SponsorshipTo }
+                .Any(address => address is not null && !IsEmail(address)))
             return false;
 
         return Mode switch
@@ -40,6 +60,9 @@ public sealed class MailSettings
             _ => false
         };
     }
+
+    private static string EncodeMailbox(string address) =>
+        Uri.EscapeDataString(address).Replace("%40", "@", StringComparison.Ordinal);
 
     public static bool IsEmail(string? value) =>
         MailAddress.TryCreate(value, out var address) &&

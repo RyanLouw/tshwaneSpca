@@ -1,3 +1,4 @@
+@inject TshwaneSPCA.Web.PublicServices.MailSettings Mail
 <section class="section alt" id="volunteer">
   <div class="wrap">
     <div class="head">
@@ -41,23 +42,15 @@
       </div>
     </div>
     <p class="volunteer-contact-note">
-      <a class="btn blue" href="#contact"
-        >Contact a branch about volunteering →</a
+      <a class="btn blue" href="/enquiries/volunteer"
+        >Send a volunteering enquiry →</a
       >
     </p>
     <div class="volunteer-forms" id="volunteer-forms">
       <h3>📄 Download the Volunteer Application Forms</h3>
       <p>
-        Download, complete and sign the applicable form, then email your
-        completed documents to
-        <a href="mailto:admin@@spcapta.org.za?subject=Volunteer%20Application"
-          >admin@@spcapta.org.za</a
-        >
-        or
-        <a
-          href="mailto:chairperson@@spcapta.org.za?subject=Volunteer%20Application"
-          >chairperson@@spcapta.org.za</a
-        >.
+        Download and sign the applicable form. Use the email button below and
+        attach the completed forms in your email app.
       </p>
       <div class="form-downloads">
         <div class="form-download-card">
@@ -85,10 +78,9 @@
       </div>
       <a
         class="btn outline"
-        href="mailto:admin@@spcapta.org.za?cc=chairperson%40spcapta.org.za&amp;subject=Completed%20Volunteer%20Application"
+        href="@Mail.VolunteerApplicationLink"
         >✉ Email your completed forms</a
       >
     </div>
-    <a class="btn blue" href="/enquiries/volunteer">Send a volunteering enquiry</a>
   </div>
 </section>

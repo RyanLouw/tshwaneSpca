@@ -74,3 +74,5 @@ Baseline: `FINAL_TSHWANE_SPCA_WEBSITE 10 NOV 2026(1).html`.
 - The source JavaScript handled menu disclosure, poster enlargement, account-number copying and a newsletter mailto form. The preview moves these behaviors into a standalone module and uses a native poster dialog.
 - Newsletter signup opens a local email client. Sending the message is a separate action. The preview does not save a subscription.
 - Contact routes, clinic prices and bookings, banking details, sponsorship terms and external links are draft content pending SPCA review.
+
+The original cruelty reporting artwork remains in the source HTML. The public site uses the configurable complaint button because the artwork displays the inbox address.

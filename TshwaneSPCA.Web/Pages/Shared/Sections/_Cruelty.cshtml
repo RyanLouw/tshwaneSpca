@@ -1,3 +1,4 @@
+@inject TshwaneSPCA.Web.PublicServices.MailSettings Mail
 <section class="section alt" id="cruelty">
   <div class="wrap">
     <div class="head">
@@ -8,48 +9,11 @@
         the location, a clear description and any relevant information.
       </p>
     </div>
-    <div class="grid2">
-      <div class="poster-card">
-        <img
-          alt="Animal cruelty complaints reporting poster with email address"
-          class="poster"
-          decoding="async"
-          loading="lazy"
-          src="/assets/animal-cruelty-reporting.jpg"
-        />
-        <div class="poster-actions">
-          <button data-view="cruelty" type="button">🔎 Enlarge poster</button
-          ><a
-            download="animal-cruelty-reporting.jpg"
-            href="/assets/animal-cruelty-reporting.jpg"
-            >⬇ Save poster</a
-          >
-        </div>
-      </div>
-      <div class="feature">
-        <h3 class="cruelty-contact-title">Report cruelty by email</h3>
-        <p>
-          As shown on the supplied SPCA poster, animal cruelty complaints should
-          be sent to:
-        </p>
-        <p>
-          <a
-            class="cruelty-contact-link"
-            href="mailto:inspectorcontroller@@spcapta.org.za?subject=Animal%20Cruelty%20Complaint"
-            >inspectorcontroller@@spcapta.org.za</a
-          >
-        </p>
-        <a
-          class="btn"
-          href="mailto:inspectorcontroller@@spcapta.org.za?subject=Animal%20Cruelty%20Complaint"
-          >✉ Compose a complaint email</a
-        >
-        <p>
-          For immediate animal emergencies, use the emergency contact numbers
-          below.
-        </p>
-        <a href="#emergency">See emergency numbers ↓</a>
-      </div>
+    <div class="feature">
+      <h3 class="cruelty-contact-title">Report cruelty by email</h3>
+      <p>This opens your email app with a draft addressed to the SPCA complaints inbox.</p>
+      <a class="btn" href="@Mail.ComplaintLink">✉ Send a cruelty complaint</a>
+      <p>For an immediate animal emergency, <a href="#emergency">call the emergency numbers</a>.</p>
     </div>
   </div>
 </section>
