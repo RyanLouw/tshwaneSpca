@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@(ViewData["Title"] ?? "Staff portal") · Tshwane SPCA</title>
+    <link rel="icon" href="/assets/tshwane-spca-logo.png" />
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="staff-header">
+        <div class="wrap staff-bar">
+            <a asp-page="/Staff/Index" class="brand"><img src="/assets/tshwane-spca-logo.png" alt="" />Tshwane SPCA staff</a>
+            <a href="/">Public website</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <form method="post" asp-page="/Staff/Index" asp-page-handler="SignOut">
+                    <button class="btn small" type="submit">Sign out</button>
+                </form>
+            }
+        </div>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <nav class="wrap staff-nav" aria-label="Staff navigation">
+                <a asp-page="/Staff/Index">Overview</a>
+                <a asp-page="/Staff/Content">Website copy</a>
+                <a asp-page="/Staff/Media">Media &amp; PDFs</a>
+                <a asp-page="/Staff/Events">Events</a>
+                <a asp-page="/Staff/Enquiries">Enquiries</a>
+                <a asp-page="/Staff/Subscribers">Subscribers</a>
+                <a asp-page="/Staff/Accounts">Staff accounts</a>
+            </nav>
+        }
+    </header>
+    <main id="main-content" class="wrap staff-main" tabindex="-1">
+        @RenderBody()
+    </main>
+</body>
+</html>

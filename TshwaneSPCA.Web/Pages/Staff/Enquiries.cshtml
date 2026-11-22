@@ -1,0 +1,62 @@
+@page
+@model TshwaneSPCA.Web.Pages.Staff.EnquiriesModel
+@{ ViewData["Title"] = "Public enquiries"; }
+<h1>Public enquiries</h1>
+@if (Model.Selected is { } enquiry)
+{
+    <p><a asp-page="./Enquiries" asp-route-id="">← All enquiries</a></p>
+    <article class="card">
+        <h2>@enquiry.Name</h2>
+        <dl>
+            <dt>Email</dt><dd>@enquiry.Email</dd>
+            @if (enquiry.Phone is not null) { <dt>Phone</dt><dd>@enquiry.Phone</dd> }
+            <dt>Category</dt><dd>@enquiry.Category</dd>
+            <dt>Received</dt><dd>@TshwaneSPCA.Web.Pages.Events.DetailModel.FormatDate(enquiry.ReceivedAt)</dd>
+            <dt>Consent version</dt><dd>@enquiry.ConsentVersion</dd>
+        </dl>
+        <p class="event-body">@enquiry.Message</p>
+        @if (enquiry.Category == "volunteer-application")
+        {
+            <p>Signed PDFs are delivered to the volunteer inbox.</p>
+        }
+    </article>
+}
+else
+{
+    <form class="staff-filters" method="get">
+        <label>Search <input type="search" name="search" value="@Model.Search" maxlength="120" /></label>
+        <label>Category
+            <select name="category">
+                <option value="">All categories</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category" selected="@(category == Model.Category)">@category</option>
+                }
+            </select>
+        </label>
+        <button class="btn blue small" type="submit">Apply filters</button>
+    </form>
+    @if (Model.Items.Count == 0)
+    {
+        <p>No enquiries match those filters.</p>
+    }
+    else
+    {
+        <ul class="staff-list">
+            @foreach (var item in Model.Items)
+            {
+                <li><a asp-page="./Enquiries" asp-route-id="@item.Id">@item.Name</a><span>@item.Email · @item.Category · @TshwaneSPCA.Web.Pages.Events.DetailModel.FormatDate(item.ReceivedAt)</span></li>
+            }
+        </ul>
+    }
+    <nav class="staff-pagination" aria-label="Enquiry pages">
+        @if (Model.PageNumber > 1)
+        {
+            <a asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-search="@Model.Search" asp-route-category="@Model.Category">Previous</a>
+        }
+        @if (Model.HasNext)
+        {
+            <a asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-search="@Model.Search" asp-route-category="@Model.Category">Next</a>
+        }
+    </nav>
+}

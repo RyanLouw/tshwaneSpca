@@ -1,0 +1,66 @@
+@page
+@using TshwaneSPCA.Web.Pages.Staff
+@model EventsModel
+@{ ViewData["Title"] = "Events and announcements"; }
+<h1>Events and announcements</h1>
+@if (Model.Editing is { } editing)
+{
+    <p><a asp-page="./Events" asp-route-id="">Create an event or announcement</a></p>
+    @if (editing.PublishedAt != null)
+    {
+        <p><a asp-page="/Events/Detail" asp-route-slug="@editing.Slug">View on the public website</a></p>
+    }
+}
+<form class="card public-form" method="post" asp-route-id="@Model.Editing?.Id">
+    <h2>@(Model.Editing is null ? "New announcement" : "Edit announcement")</h2>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div asp-validation-summary="All" class="form-errors" role="alert"></div>
+    }
+    <label asp-for="Form.Title">Title</label>
+    <input asp-for="Form.Title" required maxlength="180" />
+    <label asp-for="Form.Summary">Short summary</label>
+    <textarea asp-for="Form.Summary" rows="3" maxlength="500" required></textarea>
+    <label asp-for="Form.Body">Full details</label>
+    <textarea asp-for="Form.Body" rows="8" maxlength="8000" required></textarea>
+    <label asp-for="Form.Location">Location (optional)</label>
+    <input asp-for="Form.Location" maxlength="180" />
+    <label asp-for="Form.StartsAt">Starts (optional, South African time)</label>
+    <input asp-for="Form.StartsAt" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" />
+    <label asp-for="Form.EndsAt">Ends (optional, South African time)</label>
+    <input asp-for="Form.EndsAt" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" />
+    <label asp-for="Form.ImageId">Photo (optional)</label>
+    <select asp-for="Form.ImageId">
+        <option value="">Choose a published gallery photo</option>
+        @foreach (var photo in Model.Photos)
+        {
+            <option value="@photo.Id">@photo.Title</option>
+        }
+    </select>
+    <label asp-for="Form.State">Publishing status</label>
+    <select asp-for="Form.State" asp-items="Html.GetEnumSelectList<EventsModel.PublishState>()"></select>
+    <button class="btn blue" type="submit">Save announcement</button>
+</form>
+@if (Model.Editing is { } preview)
+{
+    <section class="card staff-preview" aria-label="Saved announcement preview">
+        <h2>Saved preview</h2>
+        <h3>@preview.Title</h3>
+        <p>@preview.Summary</p>
+        <p class="event-body">@preview.Body</p>
+    </section>
+}
+<h2>All announcements</h2>
+@if (Model.Items.Count == 0)
+{
+    <p>No events or announcements yet.</p>
+}
+else
+{
+    <ul class="staff-list">
+        @foreach (var item in Model.Items)
+        {
+            <li><a asp-page="./Events" asp-route-id="@item.Id">@item.Title</a><span>@(item.PublishedAt == null ? "Draft" : item.ArchivedAt != null ? "Archived" : "Published")</span></li>
+        }
+    </ul>
+}

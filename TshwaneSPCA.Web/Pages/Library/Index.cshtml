@@ -1,0 +1,40 @@
+@page "/library/{collection}"
+@using TshwaneSPCA.Data
+@model TshwaneSPCA.Web.Pages.Library.IndexModel
+<main id="main-content" class="section" tabindex="-1">
+    <div class="wrap">
+        <h1>@Model.Title</h1>
+        @if (Model.Kind == AssetKind.Newsletter)
+        {
+            <p><a href="/documents/tshwane-spca-newsletter-2026-08-to-10.pdf" download>August–October 2026 newsletter (PDF)</a></p>
+        }
+        @if (Model.Items.Count == 0)
+        {
+            <p>No additional items have been published yet.</p>
+        }
+        <div class="grid3">
+            @foreach (var item in Model.Items)
+            {
+                <article class="card">
+                    @if (Model.Kind == AssetKind.Gallery)
+                    {
+                        <img class="library-photo" src="/library/file/@item.Id" alt="@item.AltText" loading="lazy" />
+                    }
+                    <h2 class="library-title">@item.Title</h2>
+                    @if (item.EditionDate is DateOnly date)
+                    {
+                        <p>@date.ToString("d MMMM yyyy")</p>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(item.Description))
+                    {
+                        <p>@item.Description</p>
+                    }
+                    @if (Model.Kind != AssetKind.Gallery)
+                    {
+                        <a class="btn blue small" href="/library/file/@item.Id" download>Download PDF</a>
+                    }
+                </article>
+            }
+        </div>
+    </div>
+</main>

@@ -8,9 +8,9 @@ Review the public preview at desktop and mobile sizes with the SPCA. Verify the 
 
 SQLite migrations, validated enquiry forms, an email outbox, newsletter confirmation and unsubscribe, and event and announcement pages are implemented. Aspire runs Mailpit for development email. Configure the HTTPS provider and verify SPCA-approved routing, consent wording and retention before enabling live submissions. The events pages show an empty state until approved content is available.
 
-## Phase 2 staff portal
+## Phase 2 staff portal delivered
 
-Add invite-only staff access and the fixed-layout content, newsletter, gallery, document and events administration. Provide read-only enquiry search and newsletter CSV export.
+Staff sign in at `/staff` after accepting an emailed invitation. The portal provides password resets, staff account management, fixed website copy and donation details, newsletter and document PDFs, photo publishing, events and announcements, read-only enquiry search, and subscriber CSV export. Prepare the first staff account with the invitation command in the README. Review public content and configure the live mail provider before launch.
 
 ## Phase 3 production
 

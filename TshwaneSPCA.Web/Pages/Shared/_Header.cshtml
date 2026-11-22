@@ -1,3 +1,4 @@
+@inject TshwaneSPCA.Web.Staff.SiteCopy Copy
 @{ var homePrefix = Context.Request.Path == "/" ? "" : "/"; }
 <header>
   <div class="top wrap">
@@ -82,14 +83,18 @@
         </button>
         <div class="dropmenu" id="nav-submenu-5">
           <a href="@(homePrefix)#sponsor-kennel">Sponsor a kennel · R200/month</a
-          ><a
+          >
+          @if (await Copy.ShowOriginalBankPostersAsync())
+          {
+              <a
             aria-label="View Sponsor a Kennel poster"
-            class="sponsor-mini-link"
-            href="@(homePrefix)#sponsor-kennel"
-            ><img
-              alt="Sponsor a Kennel poster preview"
-              src="/assets/sponsor-a-kennel-preview.jpg"
+              class="sponsor-mini-link"
+              href="@(homePrefix)#sponsor-kennel"
+              ><img
+                alt="Sponsor a Kennel poster preview"
+                src="/assets/sponsor-a-kennel-preview.jpg"
           /></a>
+          }
         </div>
       </div>
       <div class="dropdown">

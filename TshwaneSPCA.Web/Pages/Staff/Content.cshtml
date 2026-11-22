@@ -1,0 +1,28 @@
+@page
+@model TshwaneSPCA.Web.Pages.Staff.ContentModel
+@{ ViewData["Title"] = "Website copy and donations"; }
+<h1>Website copy and donations</h1>
+<p>These fields publish to the public website when saved. Verify any banking changes before publishing.</p>
+@if (Model.Saved)
+{
+    <p class="alert" role="status">Website changes published.</p>
+}
+<form class="card public-form" method="post">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div asp-validation-summary="All" class="form-errors" role="alert"></div>
+    }
+    @foreach (var field in Model.Fields)
+    {
+        <label for="field-@field.Key">@field.Label</label>
+        @if (field.MaxLength > 240)
+        {
+            <textarea id="field-@field.Key" name="Values[@field.Key]" maxlength="@field.MaxLength" rows="4" required>@Model.Values.GetValueOrDefault(field.Key)</textarea>
+        }
+        else
+        {
+            <input id="field-@field.Key" name="Values[@field.Key]" value="@Model.Values.GetValueOrDefault(field.Key)" maxlength="@field.MaxLength" required />
+        }
+    }
+    <button class="btn blue" type="submit">Publish changes</button>
+</form>

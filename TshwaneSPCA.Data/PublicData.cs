@@ -1,17 +1,25 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace TshwaneSPCA.Data;
 
-public sealed class PublicData(DbContextOptions<PublicData> options) : DbContext(options)
+public sealed class PublicData(DbContextOptions<PublicData> options) : IdentityDbContext<IdentityUser>(options)
 {
     public DbSet<Enquiry> Enquiries => Set<Enquiry>();
     public DbSet<Subscriber> Subscribers => Set<Subscriber>();
     public DbSet<OutboxMessage> Outbox => Set<OutboxMessage>();
     public DbSet<Announcement> Announcements => Set<Announcement>();
 
+    public DbSet<SiteContent> Content => Set<SiteContent>();
+    public DbSet<PublicAsset> Assets => Set<PublicAsset>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<PublicAsset>().HasIndex(row => new { row.Kind, row.PublishedAt });
+        modelBuilder.Entity<SiteContent>().HasKey(row => row.Key);
         modelBuilder.Entity<Subscriber>().HasIndex(row => row.NormalizedEmail).IsUnique();
         modelBuilder.Entity<Subscriber>().HasIndex(row => row.ConfirmationHash).IsUnique();
         modelBuilder.Entity<Subscriber>().HasIndex(row => row.UnsubscribeHash).IsUnique();
@@ -88,14 +96,15 @@ public sealed class OutboxMessage
 public sealed class Announcement
 {
     public long Id { get; set; }
-    public required string Slug { get; init; }
-    public required string Title { get; init; }
-    public required string Summary { get; init; }
-    public required string Body { get; init; }
-    public string? Location { get; init; }
-    public string? ImagePath { get; init; }
-    public long? PublishedAt { get; init; }
-    public long? StartsAt { get; init; }
-    public long? EndsAt { get; init; }
-    public long? ArchivedAt { get; init; }
+    public required string Slug { get; set; }
+    public required string Title { get; set; }
+    public required string Summary { get; set; }
+    public required string Body { get; set; }
+    public string? Location { get; set; }
+    public string? ImagePath { get; set; }
+    public Guid? ImageAssetId { get; set; }
+    public long? PublishedAt { get; set; }
+    public long? StartsAt { get; set; }
+    public long? EndsAt { get; set; }
+    public long? ArchivedAt { get; set; }
 }

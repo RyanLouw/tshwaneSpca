@@ -7,6 +7,7 @@ namespace TshwaneSPCA.Web.Pages.Events;
 
 public sealed class DetailModel(PublicData database) : PageModel
 {
+    public PublicAsset? Photo { get; private set; }
     public Announcement Entry { get; private set; } = null!;
 
     public async Task<IActionResult> OnGetAsync(string slug, CancellationToken cancellationToken)
@@ -18,6 +19,9 @@ public sealed class DetailModel(PublicData database) : PageModel
             return NotFound();
 
         Entry = entry;
+        if (entry.ImageAssetId is Guid image)
+            Photo = await database.Assets.AsNoTracking().SingleOrDefaultAsync(asset =>
+                asset.Id == image && asset.Kind == AssetKind.Gallery && asset.PublishedAt != null, cancellationToken);
         return Page();
     }
 

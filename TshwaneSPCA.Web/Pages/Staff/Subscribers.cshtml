@@ -1,0 +1,32 @@
+@page
+@model TshwaneSPCA.Web.Pages.Staff.SubscribersModel
+@{ ViewData["Title"] = "Newsletter subscribers"; }
+<h1>Newsletter subscribers</h1>
+<p><a class="btn blue" asp-page-handler="Export">Download active subscribers CSV</a></p>
+@if (Model.Items.Count == 0)
+{
+    <p>No subscribers yet.</p>
+}
+else
+{
+    <div class="staff-table">
+        <table>
+            <thead><tr><th scope="col">Email</th><th scope="col">Consent</th><th scope="col">Confirmed</th><th scope="col">Unsubscribed</th></tr></thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Email</td>
+                        <td>@item.ConsentVersion · @TshwaneSPCA.Web.Pages.Events.DetailModel.FormatDate(item.ConsentAt)</td>
+                        <td>@(item.ConfirmedAt is long confirmed ? TshwaneSPCA.Web.Pages.Events.DetailModel.FormatDate(confirmed) : "Pending")</td>
+                        <td>@(item.UnsubscribedAt is long unsubscribed ? TshwaneSPCA.Web.Pages.Events.DetailModel.FormatDate(unsubscribed) : "—")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<nav class="staff-pagination" aria-label="Subscriber pages">
+    @if (Model.PageNumber > 1) { <a asp-route-pageNumber="@(Model.PageNumber - 1)">Previous</a> }
+    @if (Model.HasNext) { <a asp-route-pageNumber="@(Model.PageNumber + 1)">Next</a> }
+</nav>

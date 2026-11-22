@@ -1,3 +1,4 @@
+@inject TshwaneSPCA.Web.Staff.SiteCopy Copy
 <section class="hero" id="home">
   <div class="wrap hero-grid">
     <div>
@@ -7,10 +8,9 @@
         src="/assets/tshwane-spca-hero-logo.png"
       />
       <div class="eyebrow">WALTLOO &amp; CENTURION BRANCHES</div>
-      <h1>Every animal deserves a second chance.</h1>
+      <h1>@(await Copy.ReadAsync("HomeTitle"))</h1>
       <p>
-        Protecting animals, bringing families together and giving our community
-        meaningful ways to make a difference.
+        @(await Copy.ReadAsync("HomeIntro"))
       </p>
       <a class="btn" href="#adoptions">Explore adoptions →</a
       ><a class="btn outline" href="#donations">Support our animals</a>

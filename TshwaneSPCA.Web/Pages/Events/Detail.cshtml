@@ -17,7 +17,11 @@
         {
             <p>@Model.Entry.Location</p>
         }
-        @if (Model.Entry.ImagePath is { } path && path.StartsWith("/assets/", StringComparison.Ordinal)
+        @if (Model.Photo is { } photo)
+        {
+            <img src="/library/file/@photo.Id" alt="@photo.AltText" />
+        }
+        else if (Model.Entry.ImagePath is { } path && path.StartsWith("/assets/", StringComparison.Ordinal)
              && !path.Contains("..") && !path.Contains('\\'))
         {
             <img src="@path" alt="@Model.Entry.Title" />

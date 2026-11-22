@@ -24,9 +24,24 @@ docker run --rm --name tshwane-mailpit -p 127.0.0.1:1025:1025 -p 127.0.0.1:8025:
 
 Then run `dotnet run --project TshwaneSPCA.Web` in another terminal or start **TshwaneSPCA.Web** in Visual Studio. Its standalone launch profile uses port 5080. Only run one Mailpit instance at a time. On the prepared cloud machine, activate the .NET SDK before running these commands. Aspire also needs writable state in your user profile and direct connectivity to loopback addresses when an HTTP proxy is configured.
 
+## Open the staff portal
+
+Start the Aspire AppHost, then open `/staff` on the website. To invite the first staff member, run this from the repository root in PowerShell while Aspire is running:
+
+```powershell
+$env:Mail__PublicUrl = 'http://localhost:5081'
+dotnet run --project TshwaneSPCA.Web --no-build -- --invite-first-staff staff@example.test
+```
+
+In Bash, set `Mail__PublicUrl=http://localhost:5081` before the same `dotnet run` command. If you run the Web project by itself, use its origin on port 5080. Use the same `TSHWANE_DATA_DIR` as the running site if you changed the default. Find the invitation in Mailpit and follow its link to set a password. The command creates only the first staff account. Once signed in, use **Staff accounts** to invite or remove colleagues, up to five accounts. Invitations and password reset links expire after 24 hours.
+
+All staff accounts have the same permissions. Use **Website copy** to publish changes to the listed fields and banking details, **Media & PDFs** to upload and preview drafts before publishing, and **Events** to manage announcements. Once your banking details change, the site removes links to the original banking artwork because those images contain the previous details. **Enquiries** is read-only. **Subscribers** shows consent and unsubscribe records and exports confirmed, subscribed contacts.
+
+For live staff invitations and resets, configure the production mail settings and canonical HTTPS origin below. Run the first-invitation command with production settings and the persistent data directory when provisioning the live site.
+
 ## Storage and migrations
 
-Both the Web project and migration runner use the repository's ignored `.data/` directory by default. Set `TSHWANE_DATA_DIR` to the **same absolute persistent directory** for both processes when running outside the repository. The directory holds the SQLite database and Data Protection keys, which are required to decrypt queued mail. Restrict access to that directory and back up the database and keys together.
+Both the Web project and migration runner use the repository's ignored `.data/` directory by default. Set `TSHWANE_DATA_DIR` to the **same absolute persistent directory** for both processes when running outside the repository. The directory holds the SQLite database, published and draft media under `media/`, and Data Protection keys. Restrict access to the directory and back up the SQLite database, media and keys together.
 
 Run the migration service once, before starting the Web project against a new or upgraded database. Keep it a separate deploy step. For migration authoring:
 
@@ -60,6 +75,6 @@ Signed volunteer applications are submitted on the website at `/volunteer/apply`
 
 The website saves the enquiry or subscription and queues mail in the same database transaction. Failed mail retries with backoff. Resend requests include a stable idempotency key. If SMTP accepts a message immediately before a process crash, a retry can deliver it twice. Monitor queue failures and agree on data retention before launch. Keep newsletter preference query strings and request bodies out of reverse-proxy logs. For production behind a reverse proxy, configure trusted client IP forwarding at deployment so abuse limits apply per visitor.
 
-The public events pages start empty. The staff publishing interface, subscriber export and campaign sending are separate from this release. See the [roadmap](ROADMAP.md) and [development specification](docs/TSHWANE_SPCA_SPEC.md).
+The public events pages start empty. Publish approved events from the staff portal. Subscriber export is available for use with your newsletter workflow. See the [roadmap](ROADMAP.md) and [development specification](docs/TSHWANE_SPCA_SPEC.md).
 
 The supplied source HTML and newsletter are in `reference/`. See the [source inventory](docs/source-inventory.md) and [asset manifest](docs/asset-manifest.json) for the Phase 1A migration.

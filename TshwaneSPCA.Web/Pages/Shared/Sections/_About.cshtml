@@ -1,17 +1,16 @@
+@inject TshwaneSPCA.Web.Staff.SiteCopy Copy
 <section class="section" id="about">
   <div class="wrap about-expanded">
     <div class="head center">
       <div class="kicker">ABOUT US</div>
       <h2>Tshwane SPCA – Protecting Animals Since 1910</h2>
       <p class="lead about-subtitle">
-        Over 116 Years of Compassion, Protection and Hope
+        @(await Copy.ReadAsync("AboutSubtitle"))
       </p>
     </div>
     <div class="about-copy">
       <p>
-        For more than a century, the Tshwane SPCA has been a voice for the
-        voiceless, a protector of the vulnerable and a source of hope for
-        animals in need.
+        @(await Copy.ReadAsync("AboutIntro"))
       </p>
       <p>
         Established in 1910, we are one of South Africa's longest-standing

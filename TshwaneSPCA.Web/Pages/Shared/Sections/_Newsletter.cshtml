@@ -1,3 +1,12 @@
+@using Microsoft.EntityFrameworkCore
+@using TshwaneSPCA.Data
+@inject PublicData Database
+@{
+  var latest = await Database.Assets.AsNoTracking()
+    .Where(asset => asset.Kind == AssetKind.Newsletter && asset.PublishedAt != null && !asset.Archived)
+    .OrderByDescending(asset => asset.EditionDate).ThenByDescending(asset => asset.PublishedAt).ThenBy(asset => asset.Id)
+    .FirstOrDefaultAsync(Context.RequestAborted);
+}
 <section class="section" id="newsletter">
   <div class="wrap grid2">
     <div>
@@ -9,18 +18,32 @@
       </p>
     </div>
     <div class="card newsletter-card">
-      <div class="kicker">Latest edition · August – October 2026</div>
-      <h3 class="newsletter-card-title">Tshwane SPCA Newsletter</h3>
-      <p class="newsletter-edition-note">
-        Discover the latest news, animal welfare stories and community
-        highlights from our Waltloo and Centurion branches.
-      </p>
-      <a
-        class="btn blue newsletter-download"
-        download="tshwane-spca-newsletter-2026-08-to-10.pdf"
-        href="/documents/tshwane-spca-newsletter-2026-08-to-10.pdf"
-        >⬇ Download Latest Newsletter</a
-      >
+      @if (latest is not null)
+      {
+        <div class="kicker">Latest edition · @latest.EditionDate?.ToString("d MMMM yyyy")</div>
+        <h3 class="newsletter-card-title">@latest.Title</h3>
+        @if (!string.IsNullOrWhiteSpace(latest.Description))
+        {
+          <p class="newsletter-edition-note">@latest.Description</p>
+        }
+        <a class="btn blue newsletter-download" href="/library/file/@latest.Id" download>⬇ Download Latest Newsletter</a>
+      }
+      else
+      {
+        <div class="kicker">Latest edition · August – October 2026</div>
+        <h3 class="newsletter-card-title">Tshwane SPCA Newsletter</h3>
+        <p class="newsletter-edition-note">
+          Discover the latest news, animal welfare stories and community
+          highlights from our Waltloo and Centurion branches.
+        </p>
+        <a
+          class="btn blue newsletter-download"
+          download="tshwane-spca-newsletter-2026-08-to-10.pdf"
+          href="/documents/tshwane-spca-newsletter-2026-08-to-10.pdf"
+          >⬇ Download Latest Newsletter</a
+        >
+      }
+      <p><a href="/library/newsletters">Browse the newsletter archive</a></p>
     </div>
   </div>
   <div class="wrap">

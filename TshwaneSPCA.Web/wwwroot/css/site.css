@@ -1491,3 +1491,99 @@ body:has(.lightbox[open]) {
 .email-draft-links .btn {
   margin: 0;
 }
+
+.staff-bar,
+.staff-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.staff-bar {
+  padding-block: 12px;
+}
+.staff-bar .brand {
+  margin-inline-end: auto;
+}
+.staff-bar .brand img {
+  width: 48px;
+  height: 48px;
+}
+.staff-nav {
+  padding: 0 0 14px;
+}
+.staff-main {
+  padding-block: 24px 60px;
+}
+.staff-main .public-form {
+  max-width: 760px;
+}
+.staff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 16px;
+}
+.staff-grid a {
+  display: grid;
+  gap: 5px;
+  text-decoration: none;
+}
+.staff-grid span,
+.staff-list span {
+  color: var(--muted);
+}
+.staff-list {
+  padding: 0;
+  list-style: none;
+}
+.staff-list li {
+  display: grid;
+  gap: 3px;
+  padding: 12px 0;
+  border-bottom: 1px solid #dce7f6;
+  overflow-wrap: anywhere;
+}
+.staff-filters,
+.staff-pagination {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.staff-filters label {
+  display: grid;
+  gap: 5px;
+}
+.staff-filters input,
+.staff-filters select,
+.public-form select {
+  padding: 8px 10px;
+  max-width: 100%;
+  border: 1px solid #9eb3ce;
+  border-radius: 8px;
+  font: inherit;
+}
+.staff-preview {
+  margin-top: 22px;
+}
+.staff-table {
+  overflow-x: auto;
+}
+.staff-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.staff-table :is(td, th) {
+  padding: 8px 10px;
+  border-bottom: 1px solid #dce7f6;
+  text-align: start;
+}
+.library-title {
+  font-size: 1.4rem;
+}
+.library-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}

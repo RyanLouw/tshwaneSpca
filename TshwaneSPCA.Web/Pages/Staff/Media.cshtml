@@ -1,0 +1,49 @@
+@page
+@using TshwaneSPCA.Data
+@model TshwaneSPCA.Web.Pages.Staff.MediaModel
+@{ ViewData["Title"] = "Media and PDFs"; }
+<h1>Media and PDFs</h1>
+@if (Model.Editing.HasValue)
+{
+    <p><a asp-page="./Media" asp-route-id="">Upload a new file</a> · <a asp-page-handler="Preview" asp-route-id="@Model.Editing">Open staff preview</a></p>
+}
+<form method="post" enctype="multipart/form-data" class="card public-form" asp-route-id="@Model.Editing">
+    <h2>@(Model.Editing.HasValue ? "Edit media details" : "Upload media")</h2>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div asp-validation-summary="All" class="form-errors" role="alert"></div>
+    }
+    @if (!Model.Editing.HasValue)
+    {
+        <label asp-for="Form.Kind">Media type</label>
+        <select asp-for="Form.Kind" asp-items="Html.GetEnumSelectList<AssetKind>()"></select>
+        <label asp-for="Upload">File</label>
+        <input asp-for="Upload" type="file" accept=".pdf,.jpg,.jpeg,.png" required />
+        <small>Newsletter and document PDFs up to 10 MB. JPEG or PNG gallery photos up to 5 MB.</small>
+    }
+    <label asp-for="Form.Title">Title</label>
+    <input asp-for="Form.Title" required maxlength="180" />
+    <label asp-for="Form.Description">Description (optional)</label>
+    <textarea asp-for="Form.Description" rows="3" maxlength="500"></textarea>
+    <label asp-for="Form.AltText">Alternative text (required for photos)</label>
+    <input asp-for="Form.AltText" maxlength="240" />
+    <label asp-for="Form.EditionDate">Edition date (required for newsletters)</label>
+    <input asp-for="Form.EditionDate" type="date" />
+    <label class="form-consent"><input asp-for="Form.Published" /> Publish on the website</label>
+    <label class="form-consent"><input asp-for="Form.Archived" /> Include in the archive only (newsletters)</label>
+    <button class="btn blue" type="submit">Save media</button>
+</form>
+<h2>Media library</h2>
+@if (Model.Items.Count == 0)
+{
+    <p>No files uploaded yet.</p>
+}
+else
+{
+    <ul class="staff-list">
+        @foreach (var item in Model.Items)
+        {
+            <li><a asp-page="./Media" asp-route-id="@item.Id">@item.Title</a><span>@item.Kind · @(item.Archived ? "Archived" : item.PublishedAt.HasValue ? "Published" : "Draft")</span></li>
+        }
+    </ul>
+}

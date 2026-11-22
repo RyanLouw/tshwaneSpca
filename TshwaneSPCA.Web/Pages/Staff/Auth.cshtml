@@ -1,0 +1,42 @@
+@page "/staff/{operation:regex(^(login|forgot-password|set-password)$)}"
+@model TshwaneSPCA.Web.Pages.Staff.AuthModel
+@{
+    var settingPassword = Model.Operation == "set-password";
+    var resetting = Model.Operation == "forgot-password";
+    ViewData["Title"] = settingPassword ? "Set your password" : resetting ? "Reset your password" : "Staff sign in";
+}
+<h1>@ViewData["Title"]</h1>
+@if (Model.ResetRequested)
+{
+    <p class="alert" role="status">If this is a staff account, we’ll email a password link.</p>
+}
+else
+{
+    <form class="card public-form" method="post" asp-page="/Staff/Auth" asp-route-operation="@Model.Operation" asp-route-id="" asp-route-token="">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div asp-validation-summary="All" class="form-errors" role="alert"></div>
+        }
+        @if (settingPassword)
+        {
+            <input asp-for="Form.Id" type="hidden" />
+            <input asp-for="Form.Token" type="hidden" />
+            <label asp-for="Form.Password">New password</label>
+            <input asp-for="Form.Password" type="password" required minlength="12" maxlength="128" autocomplete="new-password" />
+            <label asp-for="Form.ConfirmPassword">Confirm password</label>
+            <input asp-for="Form.ConfirmPassword" type="password" required minlength="12" maxlength="128" autocomplete="new-password" />
+        }
+        else
+        {
+            <label asp-for="Form.Email">Staff email address</label>
+            <input asp-for="Form.Email" type="email" autocomplete="username" maxlength="254" required />
+            @if (!resetting)
+            {
+                <label asp-for="Form.Password">Password</label>
+                <input asp-for="Form.Password" type="password" autocomplete="current-password" maxlength="128" required />
+            }
+        }
+        <button class="btn blue" type="submit">@(settingPassword ? "Save password" : resetting ? "Send reset link" : "Sign in")</button>
+    </form>
+}
+<p><a asp-page="/Staff/Auth" asp-route-operation="@(Model.Operation == "login" ? "forgot-password" : "login")">@(Model.Operation == "login" ? "Forgot password?" : "Return to sign in")</a></p>

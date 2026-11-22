@@ -1,12 +1,11 @@
+@inject TshwaneSPCA.Web.Staff.SiteCopy Copy
 <section class="section alt" id="volunteer">
   <div class="wrap">
     <div class="head">
       <div class="kicker">Get involved</div>
       <h2>Volunteering: give the gift of your time</h2>
       <p class="lead">
-        Your time, energy and compassion can make a real difference. Ask the
-        branch about current volunteer opportunities and any orientation or
-        requirements.
+        @(await Copy.ReadAsync("VolunteerIntro"))
       </p>
     </div>
     <figure class="volunteer-feature-photo">

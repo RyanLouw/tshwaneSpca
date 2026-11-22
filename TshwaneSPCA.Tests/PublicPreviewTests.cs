@@ -105,8 +105,9 @@ public sealed class PublicPreviewTests(PublicServicesFactory factory)
         Assert.True(pdf.AsSpan().SequenceEqual(source), "The preview must serve the original newsletter bytes.");
     }
 
-    private static async Task<IDocument> GetHomePage(HttpClient client)
+    private async Task<IDocument> GetHomePage(HttpClient client)
     {
+        await factory.InitializeDatabaseAsync();
         using var response = await client.GetAsync("/");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal("text/html", response.Content.Headers.ContentType!.MediaType);

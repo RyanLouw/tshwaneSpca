@@ -1,0 +1,41 @@
+@page
+@model TshwaneSPCA.Web.Pages.Staff.AccountsModel
+@using System.Security.Claims
+@{ ViewData["Title"] = "Staff accounts"; }
+<h1>Staff accounts</h1>
+@if (Model.Status is not null)
+{
+    <p class="alert" role="status">@Model.Status</p>
+}
+@if (!ViewData.ModelState.IsValid)
+{
+    <div asp-validation-summary="All" class="form-errors" role="alert"></div>
+}
+<ul class="staff-list">
+    @foreach (var member in Model.Members)
+    {
+        <li>
+            <strong>@member.Email</strong>
+            <span>@(member.EmailConfirmed ? "Active" : "Invitation pending")</span>
+            @if (member.Id != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                <details>
+                    <summary>Remove access</summary>
+                    <form method="post" asp-page-handler="Remove" asp-route-id="@member.Id">
+                        <p>This signs the member out and removes their staff account.</p>
+                        <button type="submit" class="btn small">Remove access for @member.Email</button>
+                    </form>
+                </details>
+            }
+        </li>
+    }
+</ul>
+@if (Model.Members.Count < 5)
+{
+    <form class="card public-form" method="post">
+        <h2>Invite a staff member</h2>
+        <label asp-for="Email">Staff email address</label>
+        <input asp-for="Email" type="email" required maxlength="254" />
+        <button class="btn blue" type="submit">Send invitation</button>
+    </form>
+}
