@@ -3,12 +3,11 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using AngleSharp.Dom;
 using AngleSharp.Html.Parser;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace TshwaneSPCA.Tests;
 
-public sealed class PublicPreviewTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+public sealed class PublicPreviewTests(PublicServicesFactory factory)
+    : IClassFixture<PublicServicesFactory>
 {
     private static readonly string[] SectionIds =
     [

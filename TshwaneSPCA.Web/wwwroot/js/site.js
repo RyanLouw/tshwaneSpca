@@ -93,7 +93,7 @@ posterDialog.addEventListener("close", () =>
 
 const copyButton = document.querySelector("[data-copy]");
 let copyReset;
-copyButton.addEventListener("click", async () => {
+copyButton?.addEventListener("click", async () => {
   clearTimeout(copyReset);
   try {
     await navigator.clipboard.writeText(copyButton.dataset.copy);
@@ -102,23 +102,4 @@ copyButton.addEventListener("click", async () => {
     copyButton.textContent = "Select number to copy";
   }
   copyReset = setTimeout(() => (copyButton.textContent = "Copy"), 2000);
-});
-
-const signup = document.querySelector("#newsletter-subscribe-form");
-signup.querySelector("button[type=submit]").disabled = false;
-signup.addEventListener("submit", (event) => {
-  event.preventDefault();
-  if (!signup.reportValidity()) return;
-
-  const email = document.querySelector("#newsletter-email").value.trim();
-  const subject = encodeURIComponent(
-    "Tshwane SPCA Newsletter Subscription Request",
-  );
-  const body = encodeURIComponent(
-    `Please add ${email} to the Tshwane SPCA newsletter mailing list.\n\n` +
-      "I consent to receive Tshwane SPCA newsletters and understand that I can unsubscribe by contacting Tshwane SPCA.",
-  );
-  document.querySelector("#newsletter-signup-status").textContent =
-    "Your email app will open. Please send the message to request a subscription.";
-  window.location.href = `mailto:admin@spcapta.org.za?subject=${subject}&body=${body}`;
 });

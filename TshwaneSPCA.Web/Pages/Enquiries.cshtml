@@ -1,0 +1,45 @@
+@page "/enquiries/{category?}"
+@model TshwaneSPCA.Web.Pages.EnquiriesModel
+
+<main id="main-content" class="section" tabindex="-1">
+    <div class="wrap public-service">
+        <a href="/#contact">← Contact our branches</a>
+        <h1>@Model.Title</h1>
+        <p>For a lost or injured animal or another urgent situation, <a href="/#emergency">call the emergency numbers</a>.</p>
+        @if (Model.Received)
+        {
+            <p class="alert" role="status">Your enquiry was received. The team can reply using the contact details you supplied.</p>
+        }
+        else if (Model.Enabled)
+        {
+            <form class="card public-form" method="post" asp-page="/Enquiries" asp-route-category="@Model.Category">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div asp-validation-summary="All" class="form-errors" role="alert"></div>
+                }
+                <input asp-for="Form.RequestId" type="hidden" />
+                <label asp-for="Form.Name">Full name</label>
+                <input asp-for="Form.Name" autocomplete="name" maxlength="100" required />
+                <label asp-for="Form.Email">Email address</label>
+                <input asp-for="Form.Email" type="email" autocomplete="email" maxlength="254" required />
+                <label asp-for="Form.Phone">Phone (optional)</label>
+                <input asp-for="Form.Phone" type="tel" autocomplete="tel" maxlength="40" />
+                <label asp-for="Form.Message">Your enquiry</label>
+                <textarea asp-for="Form.Message" maxlength="3000" rows="6" required></textarea>
+                <div hidden>
+                    <label asp-for="Form.Website">Leave this blank</label>
+                    <input asp-for="Form.Website" autocomplete="off" tabindex="-1" />
+                </div>
+                <label class="form-consent">
+                    <input asp-for="Form.Consent" required />
+                    I agree that Tshwane SPCA may use these details to reply to my enquiry.
+                </label>
+                <button class="btn blue" type="submit">Send enquiry</button>
+            </form>
+        }
+        else
+        {
+            <p>Online enquiries are currently unavailable. Please contact your branch directly.</p>
+        }
+    </div>
+</main>

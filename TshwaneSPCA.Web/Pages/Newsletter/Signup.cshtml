@@ -1,0 +1,37 @@
+@page "/newsletter/signup"
+@model TshwaneSPCA.Web.Pages.Newsletter.SignupModel
+
+<main id="main-content" class="section" tabindex="-1">
+    <div class="wrap public-service">
+        <a href="/#newsletter">← Latest newsletter</a>
+        <h1>Sign up for the newsletter</h1>
+        @if (Model.Requested)
+        {
+            <p class="alert" role="status">If this address is eligible, you’ll receive a confirmation email. Follow the link to finish signing up.</p>
+        }
+        else if (Model.Enabled)
+        {
+            <form class="card public-form" method="post" asp-page="/Newsletter/Signup">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div asp-validation-summary="All" class="form-errors" role="alert"></div>
+                }
+                <label asp-for="Form.Email">Email address</label>
+                <input asp-for="Form.Email" type="email" autocomplete="email" maxlength="254" required />
+                <div hidden>
+                    <label asp-for="Form.Website">Leave this blank</label>
+                    <input asp-for="Form.Website" autocomplete="off" tabindex="-1" />
+                </div>
+                <label class="form-consent">
+                    <input asp-for="Form.Consent" required />
+                    I agree to receive Tshwane SPCA newsletters at this email address. I can unsubscribe using the link in my confirmation email.
+                </label>
+                <button class="btn blue" type="submit">Send confirmation email</button>
+            </form>
+        }
+        else
+        {
+            <p>Online newsletter signup is currently unavailable.</p>
+        }
+    </div>
+</main>

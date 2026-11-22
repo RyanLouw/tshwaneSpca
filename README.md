@@ -1,10 +1,10 @@
-# Tshwane SPCA website preview
+# Tshwane SPCA website
 
-The Phase 1A public website uses .NET 10, ASP.NET Core Razor Pages and Aspire. It preserves the supplied site’s branding, photography, copy and page structure for SPCA review.
+The public website uses .NET 10, ASP.NET Core Razor Pages and Aspire. Phase 1B adds public enquiries, newsletter signup and preferences, and an events and announcements archive to the Phase 1A preview.
 
 ## Run locally
 
-Install the .NET 10 SDK, then run from the repository root:
+Install the .NET 10 SDK and start a Docker-compatible container runtime. From the repository root, run:
 
 ```sh
 dotnet restore
@@ -13,26 +13,44 @@ dotnet test --no-build
 dotnet run --project TshwaneSPCA.AppHost --no-build
 ```
 
-Open the Aspire dashboard URL printed by the AppHost, then open the **web** resource’s HTTP endpoint on port 5081. Aspire starts the web project and checks its `/health` endpoint. This preview uses local HTTP and needs no containers, database, credentials or mail server.
+In Visual Studio, set **TshwaneSPCA.AppHost** as the startup project and press **F5**. Aspire runs the one-shot SQLite migration, starts Mailpit and starts the site once both dependencies are ready. The dashboard is on port 15120, the website on 5081 and the Mailpit inbox on 8025. Dev mail goes to Mailpit, including the email addressed to a newsletter test visitor. Mailpit requires no provider account or API key. Use fake contact details when testing.
 
-In Visual Studio, set `TshwaneSPCA.AppHost` as the startup project and press F5 to open the dashboard. To open the website directly with F5, set `TshwaneSPCA.Web` as the startup project. If the browser stays closed, open the address shown under `Now listening on` in the Output window while the process is running.
-
-To run just the public site:
+To run the Web project directly, first prepare the SQLite database and run Mailpit independently with SMTP on port 1025 and its inbox on 8025:
 
 ```sh
-dotnet run --project TshwaneSPCA.Web -- --urls http://localhost:5080
+dotnet run --project TshwaneSPCA.MigrationService
+docker run --rm --name tshwane-mailpit -p 127.0.0.1:1025:1025 -p 127.0.0.1:8025:8025 axllent/mailpit:v1.27.8
 ```
 
-In the prepared cloud environment, activate the .NET SDK using the environment’s start instructions before running these commands. The AppHost needs writable Aspire and DCP state directories in your user profile. In an environment that uses an HTTP proxy, include the loopback addresses `localhost`, `127.0.0.1`, and `::1` in the proxy exceptions. In the cloud validation run, DCP used IPv4 via `DCP_IP_VERSION_PREFERENCE=IPv4`. The standalone Web command also works in the restricted shell.
+Then run `dotnet run --project TshwaneSPCA.Web` in another terminal or start **TshwaneSPCA.Web** in Visual Studio. Its standalone launch profile uses port 5080. Only run one Mailpit instance at a time. On the prepared cloud machine, activate the .NET SDK before running these commands. Aspire also needs writable state in your user profile and direct connectivity to loopback addresses when an HTTP proxy is configured.
 
-## Project structure
+## Storage and migrations
 
-- `TshwaneSPCA.AppHost` starts the preview in Aspire.
-- `TshwaneSPCA.ServiceDefaults` provides the health check used by Aspire.
-- `TshwaneSPCA.Web` contains the shared Razor layout, navigation, individual section partials, CSS, JavaScript, and static media.
-- `TshwaneSPCA.Tests` verifies the public HTTP response, section links, accessible markup, asset types and checksums, and newsletter PDF integrity.
-- `reference/` contains the supplied HTML and original newsletter PDF. See the [source inventory](docs/source-inventory.md) and [asset manifest](docs/asset-manifest.json) for the migration mapping.
+Both the Web project and migration runner use the repository's ignored `.data/` directory by default. Set `TSHWANE_DATA_DIR` to the **same absolute persistent directory** for both processes when running outside the repository. The directory holds the SQLite database and Data Protection keys, which are required to decrypt queued mail. Restrict access to that directory and back up the database and keys together.
 
-The newsletter signup button opens a local mail client with a prepared request. The visitor sends it themselves. Volunteer application PDFs and the original six-page newsletter are available as direct downloads.
+Run the migration service once, before starting the Web project against a new or upgraded database. Keep it a separate deploy step. For migration authoring:
 
-See the [roadmap](ROADMAP.md) for later features and the approval needed before publication.
+```sh
+dotnet tool restore
+dotnet ef migrations add NameOfChange --project TshwaneSPCA.Data --startup-project TshwaneSPCA.MigrationService
+```
+
+## Production email configuration
+
+Phase 1B supports Resend over HTTPS. The production default disables email-backed forms until configured. Set these values in the hosting environment after the SPCA approves routing and consent wording:
+
+| Variable | Purpose |
+| --- | --- |
+| `Mail__Mode` | `Resend` |
+| `Mail__PublicUrl` | Canonical HTTPS origin that receives confirmation and unsubscribe links |
+| `Mail__From` | Address on the provider-verified sender domain |
+| `Mail__GeneralTo` | General enquiry inbox |
+| `Mail__VolunteerTo` | Volunteer enquiry inbox |
+| `Mail__DonationsTo` | Donation and sponsorship enquiry inbox |
+| `Mail__ResendApiKey` | API key stored securely in hosting configuration |
+
+The website saves the enquiry or subscription and queues mail in the same database transaction. Failed mail retries with backoff. Resend requests include a stable idempotency key. If SMTP accepts a message immediately before a process crash, a retry can deliver it twice. Monitor queue failures and agree on data retention before launch. Keep newsletter preference query strings and request bodies out of reverse-proxy logs. For production behind a reverse proxy, configure trusted client IP forwarding at deployment so abuse limits apply per visitor.
+
+The public events pages start empty. The staff publishing interface, subscriber export and campaign sending are separate from this release. See the [roadmap](ROADMAP.md) and [development specification](docs/TSHWANE_SPCA_SPEC.md).
+
+The supplied source HTML and newsletter are in `reference/`. See the [source inventory](docs/source-inventory.md) and [asset manifest](docs/asset-manifest.json) for the Phase 1A migration.

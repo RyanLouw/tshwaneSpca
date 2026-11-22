@@ -1,0 +1,27 @@
+@page "/events/{view:regex(^archive$)?}"
+@model TshwaneSPCA.Web.Pages.Events.IndexModel
+
+<main id="main-content" class="section" tabindex="-1">
+    <div class="wrap public-service">
+        <h1>@(Model.Archive ? "Events and announcements archive" : "Events and announcements")</h1>
+        @if (Model.Archive)
+        {
+            <p><a asp-page="./Index" asp-route-view="">View current events and announcements</a></p>
+        }
+        else
+        {
+            <p><a asp-page="./Index" asp-route-view="archive">Browse the archive</a></p>
+        }
+        @if (Model.Entries.Count == 0)
+        {
+            <p>@(Model.Archive ? "There are no archived events or announcements yet." : "There are no published events or announcements yet.")</p>
+        }
+        @foreach (var entry in Model.Entries)
+        {
+            <article class="card event-listing">
+                <h2><a asp-page="./Detail" asp-route-slug="@entry.Slug">@entry.Title</a></h2>
+                <p>@entry.Summary</p>
+            </article>
+        }
+    </div>
+</main>

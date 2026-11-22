@@ -1,6 +1,7 @@
+@{ var homePrefix = Context.Request.Path == "/" ? "" : "/"; }
 <header>
   <div class="top wrap">
-    <a class="brand" href="#home"
+    <a class="brand" href="@(homePrefix)#home"
       ><img
         alt="DBV SPCA Tshwane logo"
         src="/assets/tshwane-spca-logo.png" /></a
@@ -15,7 +16,7 @@
       ☰
     </button>
     <nav aria-label="Main navigation" class="nav" id="mainNav">
-      <a href="#home">Home</a><a href="#about">About</a>
+      <a href="@(homePrefix)#home">Home</a><a href="@(homePrefix)#about">About</a>
       <div class="dropdown">
         <button
           aria-controls="nav-submenu-1"
@@ -25,9 +26,9 @@
           Adoptions ▾
         </button>
         <div class="dropmenu" id="nav-submenu-1">
-          <a href="#adoptions">Adoption information</a
-          ><a href="#process">Adoption process</a
-          ><a href="#happy">Happy adoption stories</a>
+          <a href="@(homePrefix)#adoptions">Adoption information</a
+          ><a href="@(homePrefix)#process">Adoption process</a
+          ><a href="@(homePrefix)#happy">Happy adoption stories</a>
         </div>
       </div>
       <div class="dropdown">
@@ -39,9 +40,9 @@
           Clinics ▾
         </button>
         <div class="dropmenu" id="nav-submenu-2">
-          <a href="#clinic">Clinics overview</a
-          ><a href="#clinic-prices">Clinic price list</a
-          ><a href="#clinic-booking">Booking information</a>
+          <a href="@(homePrefix)#clinic">Clinics overview</a
+          ><a href="@(homePrefix)#clinic-prices">Clinic price list</a
+          ><a href="@(homePrefix)#clinic-booking">Booking information</a>
         </div>
       </div>
       <div class="dropdown">
@@ -53,9 +54,9 @@
           Donations ▾
         </button>
         <div class="dropmenu" id="nav-submenu-3">
-          <a href="#donations">How to donate</a
-          ><a href="#banking">Banking details</a
-          ><a href="#wish-list">Items we need</a>
+          <a href="@(homePrefix)#donations">How to donate</a
+          ><a href="@(homePrefix)#banking">Banking details</a
+          ><a href="@(homePrefix)#wish-list">Items we need</a>
         </div>
       </div>
       <div class="dropdown">
@@ -67,8 +68,8 @@
           Cruelty Complaints ▾
         </button>
         <div class="dropmenu" id="nav-submenu-4">
-          <a href="#cruelty">Report animal cruelty</a
-          ><a href="#emergency">Emergency numbers</a>
+          <a href="@(homePrefix)#cruelty">Report animal cruelty</a
+          ><a href="@(homePrefix)#emergency">Emergency numbers</a>
         </div>
       </div>
       <div class="dropdown sponsor-dropdown">
@@ -80,11 +81,11 @@
           Sponsor a Kennel ▾
         </button>
         <div class="dropmenu" id="nav-submenu-5">
-          <a href="#sponsor-kennel">Sponsor a kennel · R200/month</a
+          <a href="@(homePrefix)#sponsor-kennel">Sponsor a kennel · R200/month</a
           ><a
             aria-label="View Sponsor a Kennel poster"
             class="sponsor-mini-link"
-            href="#sponsor-kennel"
+            href="@(homePrefix)#sponsor-kennel"
             ><img
               alt="Sponsor a Kennel poster preview"
               src="/assets/sponsor-a-kennel-preview.jpg"
@@ -100,11 +101,11 @@
           Volunteering ▾
         </button>
         <div class="dropmenu" id="nav-submenu-6">
-          <a href="#volunteer">Volunteer information</a
-          ><a href="#volunteer-forms">Download volunteer forms</a>
+          <a href="@(homePrefix)#volunteer">Volunteer information</a
+          ><a href="@(homePrefix)#volunteer-forms">Download volunteer forms</a>
         </div>
       </div>
-      <a href="#newsletter">Newsletter</a>
+      <a href="@(homePrefix)#newsletter">Newsletter</a>
       <div class="dropdown">
         <button
           aria-controls="nav-submenu-7"
@@ -114,11 +115,12 @@
           More ▾
         </button>
         <div class="dropmenu" id="nav-submenu-7">
-          <a href="#charity-shop">Charity shop</a
-          ><a href="#contact">Contact our branches</a>
+          <a href="@(homePrefix)#charity-shop">Charity shop</a
+          ><a href="@(homePrefix)#contact">Contact our branches</a>
+          <a href="/events">Events and announcements</a>
         </div>
       </div>
-      <a class="donate-link" href="#donations">♥ Donate</a>
+      <a class="donate-link" href="@(homePrefix)#donations">♥ Donate</a>
     </nav>
   </div>
 </header>

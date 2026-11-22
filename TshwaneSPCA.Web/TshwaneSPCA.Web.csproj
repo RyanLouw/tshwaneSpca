@@ -6,5 +6,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../TshwaneSPCA.ServiceDefaults/TshwaneSPCA.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\TshwaneSPCA.Data\TshwaneSPCA.Data.csproj" />
   </ItemGroup>
 </Project>

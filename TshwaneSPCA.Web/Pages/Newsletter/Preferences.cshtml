@@ -1,0 +1,21 @@
+@page "/newsletter/preferences"
+@model TshwaneSPCA.Web.Pages.Newsletter.PreferencesModel
+
+<main id="main-content" class="section" tabindex="-1">
+    <div class="wrap public-service">
+        <a href="/#newsletter">← Latest newsletter</a>
+        <h1>Newsletter preferences</h1>
+        @if (Model.Result is not null)
+        {
+            <p class="alert" role="status">@Model.Result</p>
+        }
+        else
+        {
+            <form class="card public-form" method="post" asp-page="/Newsletter/Preferences">
+                <input asp-for="Operation" type="hidden" />
+                <input asp-for="Token" type="hidden" />
+                <button class="btn blue" type="submit">@(Model.Operation == "confirm" ? "Confirm subscription" : "Unsubscribe")</button>
+            </form>
+        }
+    </div>
+</main>

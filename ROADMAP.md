@@ -2,11 +2,11 @@
 
 ## Phase 1A review
 
-Review the public preview at desktop and mobile sizes with the SPCA. Verify the logo, photography, copy, branch and after-hours details, email routing (including newsletter requests), clinic prices and booking information, banking details, kennel sponsorship pricing, Facebook link, and permission to publish the documents. The preview follows the supplied HTML for draft contact and donation information. Its newsletter request opens the draft admin email route pending confirmation of the intended inbox.
+Review the public preview at desktop and mobile sizes with the SPCA. Verify the logo, photography, copy, branch and after-hours details, email routing (including newsletter requests), clinic prices and booking information, banking details, kennel sponsorship pricing, Facebook link, and permission to publish the documents. The preview follows the supplied HTML for draft contact and donation information.
 
-## Phase 1B public services
+## Phase 1B public services delivered
 
-After preview approval, add SQLite and EF Core migrations, validated enquiry forms, an email outbox, newsletter subscriptions with confirmation and unsubscribe, and events and announcements. Add Mailpit to Aspire for development email and configure a transactional HTTPS mail provider for production. Confirm email routing and POPIA/consent wording before enabling public submissions.
+SQLite migrations, validated enquiry forms, an email outbox, newsletter confirmation and unsubscribe, and event and announcement pages are implemented. Aspire runs Mailpit for development email. Configure the HTTPS provider and verify SPCA-approved routing, consent wording and retention before enabling live submissions. The events pages show an empty state until approved content is available.
 
 ## Phase 2 staff portal
 

@@ -1,0 +1,27 @@
+@page "/events/item/{slug}"
+@model TshwaneSPCA.Web.Pages.Events.DetailModel
+
+<main id="main-content" class="section" tabindex="-1">
+    <div class="wrap public-service">
+        <a asp-page="./Index">← Events and announcements</a>
+        <h1>@Model.Entry.Title</h1>
+        @if (Model.Entry.StartsAt is long start)
+        {
+            <p>Starts @TshwaneSPCA.Web.Pages.Events.DetailModel.FormatDate(start)</p>
+        }
+        @if (Model.Entry.EndsAt is long end)
+        {
+            <p>Ends @TshwaneSPCA.Web.Pages.Events.DetailModel.FormatDate(end)</p>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Entry.Location))
+        {
+            <p>@Model.Entry.Location</p>
+        }
+        @if (Model.Entry.ImagePath is { } path && path.StartsWith("/assets/", StringComparison.Ordinal)
+             && !path.Contains("..") && !path.Contains('\\'))
+        {
+            <img src="@path" alt="@Model.Entry.Title" />
+        }
+        <p class="event-body">@Model.Entry.Body</p>
+    </div>
+</main>

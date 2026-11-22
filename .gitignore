@@ -3,3 +3,6 @@
 .vs/
 TestResults/
 *.user
+
+# Local SQLite, outbox and data protection keys
+.data/
