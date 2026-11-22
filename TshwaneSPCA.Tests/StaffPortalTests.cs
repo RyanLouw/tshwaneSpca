@@ -204,6 +204,29 @@ public sealed class StaffPortalTests
     }
 
     [Fact]
+    public async Task InitialAdminProvisioningCreatesAndQueuesOnlyOnce()
+    {
+        await using var factory = new PublicServicesFactory();
+        await factory.InitializeDatabaseAsync();
+        await using var scope = factory.Services.CreateAsyncScope();
+        var accounts = scope.ServiceProvider.GetRequiredService<StaffAccounts>();
+        var database = scope.ServiceProvider.GetRequiredService<PublicData>();
+        var users = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+        const string email = "configured-admin@example.test";
+
+        Assert.Null(await accounts.ProvisionInitialAdminAsync(email, CancellationToken.None));
+        var created = Assert.Single(await database.Users.ToListAsync());
+        Assert.Equal(email, created.Email);
+        Assert.False(created.EmailConfirmed);
+        Assert.Null(created.PasswordHash);
+        Assert.True(await users.IsInRoleAsync(created, StaffAccess.Administrator));
+        Assert.Null(await accounts.ProvisionInitialAdminAsync("changed@example.test", CancellationToken.None));
+        Assert.Single(await database.Users.ToListAsync());
+        Assert.Single(await database.Outbox.ToListAsync());
+        await factory.Mail.WaitForAsync(message => message.To == email && message.Subject.Contains("invitation"));
+    }
+
+    [Fact]
     public async Task ExistingInstallationCanSelectItsFirstAdministrator()
     {
         await using var factory = new PublicServicesFactory();

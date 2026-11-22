@@ -47,7 +47,13 @@ Use the same `TSHWANE_DATA_DIR` as the site. This works until the installation h
 
 Use **Website copy** to publish changes to the listed fields, or banking details when signed in as administrator, **Media & PDFs** to upload and preview drafts before publishing, and **Events** to manage announcements. Once your banking details change, the site removes links to the original banking artwork because those images contain the previous details. **Enquiries** is read-only. **Subscribers** shows consent and unsubscribe records and exports confirmed, subscribed contacts.
 
-For live staff invitations and resets, configure the production mail settings and canonical HTTPS origin below. Run the first-invitation command with production settings and the persistent data directory when provisioning the live site.
+### Create the first administrator automatically on the live server
+
+Set `Staff__InitialAdminEmail` to the intended administrator’s email address in the **live web app’s environment**. Set `Mail__PublicUrl` to the live HTTPS origin and configure the production mail provider below. Keep mail credentials in the hosting environment. If GitHub Actions deploys the app, have the deployment pass the setting to the running web process.
+
+Run the migration service before starting the Web project. On the first start with an empty staff database, the app creates the administrator and queues a password-setting invitation. Subsequent restarts reuse the existing administrator. If an earlier Phase 2 installation already has staff accounts but has no administrator, the setting can designate a confirmed account by its exact email. That account keeps its current password.
+
+Aspire can use the same setting for local testing. Set it in the shell that starts the AppHost and use a test address. The local invitation will arrive in Mailpit.
 
 ## Storage and migrations
 

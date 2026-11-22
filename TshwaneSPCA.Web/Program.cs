@@ -91,6 +91,16 @@ if (bootstrap || promote)
     return;
 }
 
+var initialAdminEmail = builder.Configuration["Staff:InitialAdminEmail"]?.Trim();
+if (!string.IsNullOrEmpty(initialAdminEmail))
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var error = await scope.ServiceProvider.GetRequiredService<StaffAccounts>()
+        .ProvisionInitialAdminAsync(initialAdminEmail, app.Lifetime.ApplicationStopping);
+    if (error is not null)
+        throw new InvalidOperationException(error);
+}
+
 app.Use(async (context, next) =>
 {
     context.Response.Headers.ContentSecurityPolicy =

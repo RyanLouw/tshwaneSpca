@@ -26,12 +26,54 @@ public sealed class StaffAccounts(PublicData database, UserManager<IdentityUser>
         if (await users.FindByEmailAsync(email) is not null)
             return "This email address already has a staff account.";
 
+        var error = await CreateInvitedUserAsync(email, firstAccount, cancellationToken);
+        if (error is null)
+            await transaction.CommitAsync(cancellationToken);
+        return error;
+    }
+
+    public async Task<string?> ProvisionInitialAdminAsync(string email, CancellationToken cancellationToken)
+    {
+        await using var transaction = await database.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
+        if ((await users.GetUsersInRoleAsync(StaffAccess.Administrator)).Count != 0)
+            return null;
+
+        if (!MailSettings.IsEmail(email))
+            return "Staff__InitialAdminEmail must be a valid email address.";
+
+        string? error;
+        if (await users.Users.AnyAsync(cancellationToken))
+        {
+            var existing = await users.FindByEmailAsync(email);
+            if (existing is null || !existing.EmailConfirmed)
+                return "Staff__InitialAdminEmail must match an existing confirmed staff account on this installation.";
+
+            var result = await AddRoleAsync(existing, StaffAccess.Administrator);
+            error = result.Succeeded ? null : "Could not grant the initial administrator role.";
+        }
+        else
+        {
+            if (!mail.Enabled)
+                return "Configure the email provider before enabling Staff__InitialAdminEmail.";
+
+            error = await CreateInvitedUserAsync(email, administrator: true, cancellationToken);
+            if (error is not null)
+                return "Could not create the initial administrator invitation.";
+        }
+
+        if (error is null)
+            await transaction.CommitAsync(cancellationToken);
+        return error;
+    }
+
+    private async Task<string?> CreateInvitedUserAsync(string email, bool administrator, CancellationToken cancellationToken)
+    {
         var user = new IdentityUser { UserName = email, Email = email };
         var result = await users.CreateAsync(user);
         if (!result.Succeeded)
             return string.Join(" ", result.Errors.Select(error => error.Description));
 
-        if (firstAccount)
+        if (administrator)
         {
             var roleResult = await AddRoleAsync(user, StaffAccess.Administrator);
             if (!roleResult.Succeeded)
@@ -39,7 +81,6 @@ public sealed class StaffAccounts(PublicData database, UserManager<IdentityUser>
         }
 
         await QueuePasswordLinkAsync(user, cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
         return null;
     }
 
