@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,13 @@ namespace TshwaneSPCA.Web.Pages.Staff;
 
 [RequestSizeLimit(32_768)]
 [RequestFormLimits(ValueLengthLimit = 4096, ValueCountLimit = 32)]
+[Authorize(Policy = StaffAccess.Content)]
 public sealed class ContentModel(PublicData database, SiteCopy copy) : PageModel
 {
-    public IReadOnlyList<SiteField> Fields => SiteCopy.Fields;
+    public bool CanEditBanking => User.IsInRole(StaffAccess.Administrator);
+    public IEnumerable<SiteField> Fields => SiteCopy.Fields.Where(item => CanEditBanking || !IsBanking(item.Key));
+
+    private static bool IsBanking(string key) => key.StartsWith("Bank", StringComparison.OrdinalIgnoreCase);
     [BindProperty] public Dictionary<string, string> Values { get; set; } = [];
     [TempData] public bool Saved { get; set; }
 
@@ -22,6 +27,9 @@ public sealed class ContentModel(PublicData database, SiteCopy copy) : PageModel
 
     public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
     {
+        if (!CanEditBanking && Values.Keys.Any(IsBanking))
+            return Forbid();
+
         foreach (var field in Fields)
         {
             var value = Values.GetValueOrDefault(field.Key)?.Trim();

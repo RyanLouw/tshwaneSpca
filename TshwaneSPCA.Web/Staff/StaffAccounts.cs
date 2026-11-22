@@ -8,7 +8,7 @@ using TshwaneSPCA.Web.PublicServices;
 
 namespace TshwaneSPCA.Web.Staff;
 
-public sealed class StaffAccounts(PublicData database, UserManager<IdentityUser> users, MailSettings mail, OutboxPayload outbox)
+public sealed class StaffAccounts(PublicData database, UserManager<IdentityUser> users, RoleManager<IdentityRole> roles, MailSettings mail, OutboxPayload outbox)
 {
     public async Task<string?> InviteAsync(string email, bool firstAccount, CancellationToken cancellationToken)
     {
@@ -31,10 +31,79 @@ public sealed class StaffAccounts(PublicData database, UserManager<IdentityUser>
         if (!result.Succeeded)
             return string.Join(" ", result.Errors.Select(error => error.Description));
 
+        if (firstAccount)
+        {
+            var roleResult = await AddRoleAsync(user, StaffAccess.Administrator);
+            if (!roleResult.Succeeded)
+                return Describe(roleResult);
+        }
+
         await QueuePasswordLinkAsync(user, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return null;
     }
+
+    public async Task<string?> PromoteFirstAdminAsync(string email, CancellationToken cancellationToken)
+    {
+        await using var transaction = await database.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
+        if ((await users.GetUsersInRoleAsync(StaffAccess.Administrator)).Count != 0)
+            return "An administrator already exists.";
+        var user = await users.FindByEmailAsync(email.Trim());
+        if (user is null || !user.EmailConfirmed)
+            return "Choose an existing staff account that has already accepted its invitation.";
+
+        var result = await AddRoleAsync(user, StaffAccess.Administrator);
+        if (!result.Succeeded)
+            return Describe(result);
+
+        await transaction.CommitAsync(cancellationToken);
+        return null;
+    }
+
+    public async Task<string?> SetModulesAsync(IdentityUser member, IReadOnlyCollection<string> modules,
+        CancellationToken cancellationToken)
+    {
+        if (modules.Any(module => !StaffAccess.Modules.ContainsKey(module)))
+            return "Choose valid staff permissions.";
+
+        await using var transaction = await database.Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
+        var current = await users.GetRolesAsync(member);
+        if (current.Contains(StaffAccess.Administrator))
+            return "Administrator permissions are fixed.";
+
+        var unwanted = current.Where(role => StaffAccess.Modules.ContainsKey(role) && !modules.Contains(role)).ToArray();
+        if (unwanted.Length != 0)
+        {
+            var removed = await users.RemoveFromRolesAsync(member, unwanted);
+            if (!removed.Succeeded)
+                return Describe(removed);
+        }
+
+        foreach (var module in modules.Distinct().Except(current))
+        {
+            var granted = await AddRoleAsync(member, module);
+            if (!granted.Succeeded)
+                return Describe(granted);
+        }
+
+        await transaction.CommitAsync(cancellationToken);
+        return null;
+    }
+
+    private async Task<IdentityResult> AddRoleAsync(IdentityUser user, string role)
+    {
+        if (!await roles.RoleExistsAsync(role))
+        {
+            var created = await roles.CreateAsync(new IdentityRole(role));
+            if (!created.Succeeded)
+                return created;
+        }
+
+        return await users.AddToRoleAsync(user, role);
+    }
+
+    private static string Describe(IdentityResult result) =>
+        string.Join(" ", result.Errors.Select(error => error.Description));
 
     public async Task RequestResetAsync(string email, CancellationToken cancellationToken)
     {

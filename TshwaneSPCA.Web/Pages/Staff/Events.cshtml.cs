@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
@@ -5,10 +6,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using TshwaneSPCA.Data;
 
+using TshwaneSPCA.Web.Staff;
+
 namespace TshwaneSPCA.Web.Pages.Staff;
 
 [RequestSizeLimit(32_768)]
 [RequestFormLimits(ValueLengthLimit = 8000, ValueCountLimit = 24)]
+[Authorize(Policy = StaffAccess.Events)]
 public sealed partial class EventsModel(PublicData database) : PageModel
 {
     private static readonly TimeSpan SouthAfricaOffset = TimeSpan.FromHours(2);

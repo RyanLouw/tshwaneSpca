@@ -1,11 +1,40 @@
 @page "/staff"
 @model TshwaneSPCA.Web.Pages.Staff.IndexModel
+@using TshwaneSPCA.Web.Staff
+@{
+    var isAdmin = User.IsInRole(StaffAccess.Administrator);
+}
 <h1>Staff portal</h1>
+@if (!isAdmin && !StaffAccess.Modules.Keys.Any(module => StaffAccess.Allows(User, module)))
+{
+    <p>Ask your administrator to grant access to the sections you need.</p>
+}
 <div class="staff-grid">
-    <a class="card" asp-page="./Content"><strong>Website copy and donations</strong><span>Update approved text and banking details.</span></a>
-    <a class="card" asp-page="./Media"><strong>Media and PDFs</strong><span>Publish newsletters, gallery photos and downloads.</span></a>
-    <a class="card" asp-page="./Events"><strong>Events and announcements</strong><span>Draft, publish and archive updates.</span></a>
-    <a class="card" asp-page="./Enquiries"><strong>Public enquiries</strong><span>Search messages and volunteer application records.</span></a>
-    <a class="card" asp-page="./Subscribers"><strong>Newsletter subscribers</strong><span>Review consent and export active subscribers.</span></a>
-    <a class="card" asp-page="./Accounts"><strong>Staff accounts</strong><span>Invite colleagues using their email addresses.</span></a>
+    @if (StaffAccess.Allows(User, StaffAccess.Content))
+    {
+        <a class="card" asp-page="./Content">
+            <strong>@(isAdmin ? "Website copy and donations" : "Website copy")</strong>
+            <span>@(isAdmin ? "Update approved text and banking details." : "Update approved website text.")</span>
+        </a>
+    }
+    @if (StaffAccess.Allows(User, StaffAccess.Media))
+    {
+        <a class="card" asp-page="./Media"><strong>Media and PDFs</strong><span>Publish newsletters, gallery photos and downloads.</span></a>
+    }
+    @if (StaffAccess.Allows(User, StaffAccess.Events))
+    {
+        <a class="card" asp-page="./Events"><strong>Events and announcements</strong><span>Draft, publish and archive updates.</span></a>
+    }
+    @if (StaffAccess.Allows(User, StaffAccess.Enquiries))
+    {
+        <a class="card" asp-page="./Enquiries"><strong>Public enquiries</strong><span>Search messages and volunteer application records.</span></a>
+    }
+    @if (StaffAccess.Allows(User, StaffAccess.Subscribers))
+    {
+        <a class="card" asp-page="./Subscribers"><strong>Newsletter subscribers</strong><span>Review consent and export active subscribers.</span></a>
+    }
+    @if (isAdmin)
+    {
+        <a class="card" asp-page="./Accounts"><strong>Staff accounts</strong><span>Invite colleagues and manage their permissions.</span></a>
+    }
 </div>

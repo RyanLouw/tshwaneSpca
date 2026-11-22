@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,6 +10,7 @@ namespace TshwaneSPCA.Web.Pages.Staff;
 
 [RequestSizeLimit(MediaLibrary.MaxFileBytes + 64 * 1024)]
 [RequestFormLimits(MultipartBodyLengthLimit = MediaLibrary.MaxFileBytes, ValueLengthLimit = 4096, ValueCountLimit = 24)]
+[Authorize(Policy = StaffAccess.Media)]
 public sealed class MediaModel(PublicData database, MediaLibrary storage) : PageModel
 {
     public List<PublicAsset> Items { get; private set; } = [];

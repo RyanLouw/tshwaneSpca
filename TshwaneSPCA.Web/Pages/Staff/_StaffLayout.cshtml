@@ -1,3 +1,4 @@
+@using TshwaneSPCA.Web.Staff
 <!doctype html>
 <html lang="en-ZA">
 <head>
@@ -24,12 +25,12 @@
         {
             <nav class="wrap staff-nav" aria-label="Staff navigation">
                 <a asp-page="/Staff/Index">Overview</a>
-                <a asp-page="/Staff/Content">Website copy</a>
-                <a asp-page="/Staff/Media">Media &amp; PDFs</a>
-                <a asp-page="/Staff/Events">Events</a>
-                <a asp-page="/Staff/Enquiries">Enquiries</a>
-                <a asp-page="/Staff/Subscribers">Subscribers</a>
-                <a asp-page="/Staff/Accounts">Staff accounts</a>
+                @if (StaffAccess.Allows(User, StaffAccess.Content)) { <a asp-page="/Staff/Content">Website copy</a> }
+                @if (StaffAccess.Allows(User, StaffAccess.Media)) { <a asp-page="/Staff/Media">Media &amp; PDFs</a> }
+                @if (StaffAccess.Allows(User, StaffAccess.Events)) { <a asp-page="/Staff/Events">Events</a> }
+                @if (StaffAccess.Allows(User, StaffAccess.Enquiries)) { <a asp-page="/Staff/Enquiries">Enquiries</a> }
+                @if (StaffAccess.Allows(User, StaffAccess.Subscribers)) { <a asp-page="/Staff/Subscribers">Subscribers</a> }
+                @if (User.IsInRole(StaffAccess.Administrator)) { <a asp-page="/Staff/Accounts">Staff accounts</a> }
             </nav>
         }
     </header>

@@ -8,7 +8,8 @@ using TshwaneSPCA.Web.PublicServices;
 using TshwaneSPCA.Web.Staff;
 
 var bootstrap = args is ["--invite-first-staff", _];
-var builder = WebApplication.CreateBuilder(bootstrap ? [] : args);
+var promote = args is ["--promote-first-admin", _];
+var builder = WebApplication.CreateBuilder(bootstrap || promote ? [] : args);
 // Avoid recording newsletter link tokens in HTTP request logs.
 builder.Logging.AddFilter("Microsoft.AspNetCore.Hosting.Diagnostics", LogLevel.Warning);
 builder.AddServiceDefaults();
@@ -21,10 +22,19 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
 }).AddEntityFrameworkStores<PublicData>().AddDefaultTokenProviders();
+builder.Services.AddAuthorization(options =>
+{
+    foreach (var module in StaffAccess.Modules.Keys)
+        options.AddPolicy(module, policy => policy.RequireRole(StaffAccess.Administrator, module));
+});
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/staff/login";
-    options.AccessDeniedPath = "/staff/login";
+    options.Events.OnRedirectToAccessDenied = async context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+        await context.Response.WriteAsync("You do not have access to this staff section.");
+    };
     options.Cookie.Name = "TshwaneSPCA.Staff";
     options.Cookie.HttpOnly = true;
     options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
@@ -69,12 +79,14 @@ builder.Services.AddRateLimiter(options =>
 });
 
 var app = builder.Build();
-if (bootstrap)
+if (bootstrap || promote)
 {
     await using var scope = app.Services.CreateAsyncScope();
-    var result = await scope.ServiceProvider.GetRequiredService<StaffAccounts>()
-        .InviteAsync(args[1], firstAccount: true, CancellationToken.None);
-    Console.WriteLine(result ?? "Staff invitation queued. Start the site to deliver it.");
+    var accounts = scope.ServiceProvider.GetRequiredService<StaffAccounts>();
+    var result = promote
+        ? await accounts.PromoteFirstAdminAsync(args[1], CancellationToken.None)
+        : await accounts.InviteAsync(args[1], firstAccount: true, CancellationToken.None);
+    Console.WriteLine(result ?? (promote ? "Administrator access granted." : "Staff invitation queued. Start the site to deliver it."));
     Environment.ExitCode = result is null ? 0 : 1;
     return;
 }

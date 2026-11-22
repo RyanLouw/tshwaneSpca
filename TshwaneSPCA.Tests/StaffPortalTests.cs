@@ -42,7 +42,38 @@ public sealed class StaffPortalTests
         using var secondClient = CreateClient(factory);
         await ChoosePasswordAsync(secondClient, ReadLink(secondInvite.Text), firstPassword);
         await SignInAsync(secondClient, second, firstPassword);
-        Assert.Contains("Website copy and donations", await secondClient.GetStringAsync("/staff/content"));
+        using (var restricted = await secondClient.GetAsync("/staff/content"))
+            Assert.Equal(HttpStatusCode.Forbidden, restricted.StatusCode);
+        using (var accountsResponse = await secondClient.GetAsync("/staff/accounts"))
+            Assert.Equal(HttpStatusCode.Forbidden, accountsResponse.StatusCode);
+
+        await using var accountScope = factory.Services.CreateAsyncScope();
+        var memberId = (await accountScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>()
+            .FindByEmailAsync(second))!.Id;
+        var accessPage = await new HtmlParser().ParseDocumentAsync(await client.GetStringAsync("/staff/accounts"));
+        var permissionForm = accessPage.QuerySelectorAll("form")
+            .Single(form => form.GetAttribute("action")?.Contains("handler=Permissions") == true);
+        var permissionToken = permissionForm.QuerySelector("input[name='__RequestVerificationToken']")!.GetAttribute("value")!;
+        await AssertRedirectAsync(PostAsync(client, $"/staff/accounts?id={memberId}&handler=Permissions", new()
+        {
+            ["__RequestVerificationToken"] = permissionToken,
+            ["modules"] = StaffAccess.Content
+        }), "/staff/accounts");
+
+        var content = await ReadFieldsAsync(secondClient, "/staff/content");
+        Assert.DoesNotContain("Values[BankAccountNumber]", content.Keys);
+        using (var export = await secondClient.GetAsync("/staff/subscribers?handler=Export"))
+            Assert.Equal(HttpStatusCode.Forbidden, export.StatusCode);
+        content["Values[HomeTitle]"] = "Staff can edit this heading";
+        content["Values[BankAccountNumber]"] = "1234567890";
+        using (var attempt = await PostAsync(secondClient, "/staff/content", content))
+            Assert.Equal(HttpStatusCode.Forbidden, attempt.StatusCode);
+        var unchanged = await ReadFieldsAsync(client, "/staff/content");
+        Assert.Equal("561 6000 7452", unchanged["Values[BankAccountNumber]"]);
+        Assert.NotEqual("Staff can edit this heading", unchanged["Values[HomeTitle]"]);
+        content.Remove("Values[BankAccountNumber]");
+        await AssertRedirectAsync(PostAsync(secondClient, "/staff/content", content), "/staff/content");
+        Assert.Equal("Staff can edit this heading", (await ReadFieldsAsync(client, "/staff/content"))["Values[HomeTitle]"]);
 
         await SignOutAsync(client);
         await AssertRedirectAsync(client.GetAsync("/staff"), "/staff/login");
@@ -170,6 +201,22 @@ public sealed class StaffPortalTests
         Assert.DoesNotContain("inactive@example.test", csv);
         await AssertRedirectAsync(anonymous.GetAsync("/staff/enquiries"), "/staff/login");
         await AssertRedirectAsync(anonymous.GetAsync("/staff/subscribers?handler=Export"), "/staff/login");
+    }
+
+    [Fact]
+    public async Task ExistingInstallationCanSelectItsFirstAdministrator()
+    {
+        await using var factory = new PublicServicesFactory();
+        await factory.InitializeDatabaseAsync();
+        await using var scope = factory.Services.CreateAsyncScope();
+        var users = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+        const string owner = "existing-staff@example.test";
+        var created = await users.CreateAsync(new IdentityUser { UserName = owner, Email = owner, EmailConfirmed = true });
+        Assert.True(created.Succeeded);
+        var accounts = scope.ServiceProvider.GetRequiredService<StaffAccounts>();
+        Assert.Null(await accounts.PromoteFirstAdminAsync(owner, CancellationToken.None));
+        Assert.NotNull(await accounts.PromoteFirstAdminAsync(owner, CancellationToken.None));
+        Assert.True(await users.IsInRoleAsync((await users.FindByEmailAsync(owner))!, StaffAccess.Administrator));
     }
 
     [Fact]

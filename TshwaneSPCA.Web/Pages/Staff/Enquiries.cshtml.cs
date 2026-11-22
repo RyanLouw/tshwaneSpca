@@ -1,10 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using TshwaneSPCA.Data;
 
+using TshwaneSPCA.Web.Staff;
+
 namespace TshwaneSPCA.Web.Pages.Staff;
 
+[Authorize(Policy = StaffAccess.Enquiries)]
 public sealed class EnquiriesModel(PublicData database) : PageModel
 {
     private const int PageSize = 30;

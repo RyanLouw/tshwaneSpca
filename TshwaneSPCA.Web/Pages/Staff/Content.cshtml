@@ -1,8 +1,12 @@
 @page
 @model TshwaneSPCA.Web.Pages.Staff.ContentModel
-@{ ViewData["Title"] = "Website copy and donations"; }
-<h1>Website copy and donations</h1>
-<p>These fields publish to the public website when saved. Verify any banking changes before publishing.</p>
+@{ ViewData["Title"] = Model.CanEditBanking ? "Website copy and donations" : "Website copy"; }
+<h1>@ViewData["Title"]</h1>
+<p>These fields publish to the public website when saved.</p>
+@if (Model.CanEditBanking)
+{
+    <p>Verify any banking changes before publishing.</p>
+}
 @if (Model.Saved)
 {
     <p class="alert" role="status">Website changes published.</p>

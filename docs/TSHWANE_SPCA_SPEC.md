@@ -19,7 +19,7 @@ Build and deploy a responsive Tshwane SPCA public website based on the supplied 
 |---|---|---|
 | 1 | Content ownership | Build a simple staff admin portal, not a general-purpose CMS. |
 | 2 | Admin-managed modules | Newsletters; photos/galleries; structured website text; events/announcements; forms/documents; donation information. No individual adoptable-animal profiles. |
-| 3 | Admin access | 2–5 individually authenticated administrators, all with equal content permissions. |
+| 3 | Admin access | 2–5 individually authenticated staff accounts. The administrator manages access, grants staff permissions by module, and alone edits banking details. |
 | 4 | Upload storage | Files stored on the website server on persistent storage, not external Google Drive/blob storage. |
 | 5 | Data/migrations | SQLite with EF Core, .NET Aspire for local orchestration, and a dedicated migration workflow/service. |
 | 6 | Hosting | Linux VPS on a DigitalOcean Droplet. Existing domain and email hosting should be preserved where possible. |
@@ -82,7 +82,7 @@ The existing HTML also has internal anchors including `#clinic-prices`, `#clinic
 - Send dev mail through Mailpit; production provider via HTTPS mail API behind an abstraction. No visitor file attachments.
 
 ### Phase 2 — Staff portal
-- 2–5 named staff accounts, individual authentication, equal content permissions, no public registration. Invite/reset secure email flows, lockout and CSRF protection.
+- 2–5 named staff accounts with individual authentication, administrator-managed module permissions, and invitation-only registration. Banking edits and account management require administrator access. Invite/reset secure email flows, lockout and CSRF protection.
 - Modules: newsletter PDF upload/list/archive, photo galleries, structured text fields, events/announcements, document management, donation information.
 - Read-only enquiries list with search/filter; newsletter subscriber list with CSV export (authorisation enforced), unsubscribe/consent fields; optional basic audit log recommended.
 - Strict upload validation (allowed images/PDF only as relevant; max sizes; random stored filenames; file-type signature checks; reject executable formats; safe paths); public assets outside sensitive/private folders.

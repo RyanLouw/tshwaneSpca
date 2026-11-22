@@ -33,9 +33,19 @@ $env:Mail__PublicUrl = 'http://localhost:5081'
 dotnet run --project TshwaneSPCA.Web --no-build -- --invite-first-staff staff@example.test
 ```
 
-In Bash, set `Mail__PublicUrl=http://localhost:5081` before the same `dotnet run` command. If you run the Web project by itself, use its origin on port 5080. Use the same `TSHWANE_DATA_DIR` as the running site if you changed the default. Find the invitation in Mailpit and follow its link to set a password. The command creates only the first staff account. Once signed in, use **Staff accounts** to invite or remove colleagues, up to five accounts. Invitations and password reset links expire after 24 hours.
+In Bash, set `Mail__PublicUrl=http://localhost:5081` before the same `dotnet run` command. If you run the Web project by itself, use its origin on port 5080. Use the same `TSHWANE_DATA_DIR` as the running site if you changed the default. Find the invitation in Mailpit and follow its link to set a password. The command creates only the first staff account. The first invitation creates the administrator account. Once signed in, use **Staff accounts** to invite or remove colleagues and set their permissions, up to five accounts. Invitations and password reset links expire after 24 hours.
 
-All staff accounts have the same permissions. Use **Website copy** to publish changes to the listed fields and banking details, **Media & PDFs** to upload and preview drafts before publishing, and **Events** to manage announcements. Once your banking details change, the site removes links to the original banking artwork because those images contain the previous details. **Enquiries** is read-only. **Subscribers** shows consent and unsubscribe records and exports confirmed, subscribed contacts.
+The administrator can access every module and is the only account that can edit banking details or manage staff. Other staff start with no module permissions. In **Staff accounts**, expand **Edit permissions** beside their name, select the modules they need, and save.
+
+If you already created staff accounts on an earlier Phase 2 build, designate an existing confirmed account as the first administrator from the repository root:
+
+```powershell
+dotnet run --project TshwaneSPCA.Web --no-build -- --promote-first-admin your-existing-staff-email@example.test
+```
+
+Use the same `TSHWANE_DATA_DIR` as the site. This works until the installation has an administrator. Sign in with that account to grant module access to the other staff.
+
+Use **Website copy** to publish changes to the listed fields, or banking details when signed in as administrator, **Media & PDFs** to upload and preview drafts before publishing, and **Events** to manage announcements. Once your banking details change, the site removes links to the original banking artwork because those images contain the previous details. **Enquiries** is read-only. **Subscribers** shows consent and unsubscribe records and exports confirmed, subscribed contacts.
 
 For live staff invitations and resets, configure the production mail settings and canonical HTTPS origin below. Run the first-invitation command with production settings and the persistent data directory when provisioning the live site.
 

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
@@ -5,8 +6,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using TshwaneSPCA.Data;
 
+using TshwaneSPCA.Web.Staff;
+
 namespace TshwaneSPCA.Web.Pages.Staff;
 
+[Authorize(Policy = StaffAccess.Subscribers)]
 public sealed class SubscribersModel(PublicData database) : PageModel
 {
     private const int PageSize = 30;

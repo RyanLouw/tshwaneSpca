@@ -10,7 +10,7 @@ SQLite migrations, validated enquiry forms, an email outbox, newsletter confirma
 
 ## Phase 2 staff portal delivered
 
-Staff sign in at `/staff` after accepting an emailed invitation. The portal provides password resets, staff account management, fixed website copy and donation details, newsletter and document PDFs, photo publishing, events and announcements, read-only enquiry search, and subscriber CSV export. Prepare the first staff account with the invitation command in the README. Review public content and configure the live mail provider before launch.
+Staff sign in at `/staff` after accepting an emailed invitation. The administrator grants module access per person and has exclusive access to banking edits and staff management. The portal provides password resets, staff account management, fixed website copy and donation details, newsletter and document PDFs, photo publishing, events and announcements, read-only enquiry search, and subscriber CSV export. Prepare the first staff account with the invitation command in the README. Review public content and configure the live mail provider before launch.
 
 ## Phase 3 production
 

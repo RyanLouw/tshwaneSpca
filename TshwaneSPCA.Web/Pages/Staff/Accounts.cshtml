@@ -1,8 +1,9 @@
 @page
 @model TshwaneSPCA.Web.Pages.Staff.AccountsModel
-@using System.Security.Claims
+@using TshwaneSPCA.Web.Staff
 @{ ViewData["Title"] = "Staff accounts"; }
 <h1>Staff accounts</h1>
+<p>Choose the sections each staff member can access. Banking and account management are reserved for the administrator.</p>
 @if (Model.Status is not null)
 {
     <p class="alert" role="status">@Model.Status</p>
@@ -14,11 +15,26 @@
 <ul class="staff-list">
     @foreach (var member in Model.Members)
     {
+        var access = Model.Access[member.Id];
+        var isAdmin = access.Contains(StaffAccess.Administrator);
         <li>
             <strong>@member.Email</strong>
-            <span>@(member.EmailConfirmed ? "Active" : "Invitation pending")</span>
-            @if (member.Id != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            <span>@(isAdmin ? "Administrator" : "Staff") · @(member.EmailConfirmed ? "Active" : "Invitation pending")</span>
+            @if (!isAdmin)
             {
+                <details>
+                    <summary>Edit permissions</summary>
+                    <form class="public-form" method="post" asp-page-handler="Permissions" asp-route-id="@member.Id">
+                        @foreach (var (module, label) in StaffAccess.Modules)
+                        {
+                            <label class="form-consent">
+                                <input type="checkbox" name="modules" value="@module" checked="@(access.Contains(module))" />
+                                @label
+                            </label>
+                        }
+                        <button type="submit" class="btn blue small">Save permissions</button>
+                    </form>
+                </details>
                 <details>
                     <summary>Remove access</summary>
                     <form method="post" asp-page-handler="Remove" asp-route-id="@member.Id">
@@ -34,6 +50,7 @@
 {
     <form class="card public-form" method="post">
         <h2>Invite a staff member</h2>
+        <p>Choose their permissions after sending the invitation.</p>
         <label asp-for="Email">Staff email address</label>
         <input asp-for="Email" type="email" required maxlength="254" />
         <button class="btn blue" type="submit">Send invitation</button>
