@@ -49,8 +49,8 @@
     <div class="volunteer-forms" id="volunteer-forms">
       <h3>📄 Download the Volunteer Application Forms</h3>
       <p>
-        Download and sign the applicable form. Use the email button below and
-        attach the completed forms in your email app.
+        Download and sign the applicable form. Choose an email option below,
+        attach your signed PDFs to the draft, and send it.
       </p>
       <div class="form-downloads">
         <div class="form-download-card">
@@ -76,11 +76,7 @@
           >
         </div>
       </div>
-      <a
-        class="btn outline"
-        href="@Mail.VolunteerApplicationLink"
-        >✉ Email your completed forms</a
-      >
+      @await Html.PartialAsync("_EmailDraftLinks", Mail.VolunteerApplicationDraft)
     </div>
   </div>
 </section>

@@ -11,8 +11,8 @@
     </div>
     <div class="feature">
       <h3 class="cruelty-contact-title">Report cruelty by email</h3>
-      <p>This opens your email app with a draft addressed to the SPCA complaints inbox.</p>
-      <a class="btn" href="@Mail.ComplaintLink">✉ Send a cruelty complaint</a>
+      <p>Choose how to open a draft for the SPCA complaints inbox. Include the location and describe what happened.</p>
+      @await Html.PartialAsync("_EmailDraftLinks", Mail.ComplaintDraft)
       <p>For an immediate animal emergency, <a href="#emergency">call the emergency numbers</a>.</p>
     </div>
   </div>

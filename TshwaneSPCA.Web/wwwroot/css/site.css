@@ -998,8 +998,8 @@ h3 {
   max-width: 1040px;
 }
 #about .about-expanded .head {
-  max-width: 950px;
-  margin-bottom: 30px;
+  max-width: 900px;
+  margin: 0 auto 30px;
 }
 #about .about-expanded .head h2 {
   line-height: 1.16;
@@ -1011,8 +1011,8 @@ h3 {
   margin: 12px 0 0;
 }
 #about .about-copy {
-  max-width: 900px;
-  margin: auto;
+  max-width: 72ch;
+  margin: 0 auto;
   font-size: 16px;
   line-height: 1.85;
 }
@@ -1024,15 +1024,17 @@ h3 {
   line-height: 1.25;
   margin: 39px 0 18px;
   color: #194c78;
+  text-align: center;
 }
 #about .about-copy strong {
   font-weight: 800;
 }
 #about .about-promise {
   padding: 22px 30px;
-  border-left: 5px solid #3b83be;
+  border-top: 4px solid #3b83be;
   background: #eff6fc;
-  border-radius: 0 16px 16px 0;
+  border-radius: 16px;
+  text-align: center;
   margin: 20px 0 32px;
 }
 #about .about-promise p {
@@ -1176,7 +1178,7 @@ h3 {
 .cruelty-contact-title {
   font-size: 1.8rem;
 }
-#cruelty .btn {
+#cruelty .email-draft-links .btn {
   color: var(--navy);
 }
 .emergency-number {
@@ -1465,4 +1467,15 @@ body:has(.lightbox[open]) {
 
 .event-body {
   white-space: pre-line;
+}
+
+
+.email-draft-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.email-draft-links .btn {
+  margin: 0;
 }

@@ -2,9 +2,11 @@ using System.Net;
 using System.Text.RegularExpressions;
 using AngleSharp.Html.Parser;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TshwaneSPCA.Data;
+using TshwaneSPCA.Web.PublicServices;
 
 namespace TshwaneSPCA.Tests;
 
@@ -112,7 +114,24 @@ public sealed class Phase1bTests(PublicServicesFactory factory) : IClassFixture<
         using var client = routingFactory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
         var home = await new HtmlParser().ParseDocumentAsync(await client.GetStringAsync("/"));
         var complaint = Assert.Single(home.QuerySelectorAll("#cruelty a[href^='mailto:']"));
-        Assert.Contains("Send a cruelty complaint", complaint.TextContent);
+        Assert.Equal("Use my email app", complaint.TextContent);
+        var mail = routingFactory.Services.GetRequiredService<MailSettings>();
+        foreach (var (section, draft) in new[]
+        {
+            ("#cruelty", mail.ComplaintDraft), ("#volunteer-forms", mail.VolunteerApplicationDraft)
+        })
+        {
+            var gmail = Assert.Single(home.QuerySelectorAll($"{section} a[href^='https://mail.google.com/']"));
+            var outlook = Assert.Single(home.QuerySelectorAll($"{section} a[href^='https://outlook.live.com/']"));
+            foreach (var (link, subjectParameter) in new[] { (gmail, "su"), (outlook, "subject") })
+            {
+                var query = QueryHelpers.ParseQuery(new Uri(link.GetAttribute("href")!).Query);
+                Assert.Equal(draft.To, query["to"].ToString());
+                Assert.Equal(draft.Subject, query[subjectParameter].ToString());
+                Assert.Equal(draft.Cc ?? "", query.GetValueOrDefault("cc").ToString());
+                Assert.Equal("_blank", link.GetAttribute("target"));
+            }
+        }
         Assert.DoesNotContain("@", home.QuerySelector("#cruelty")!.TextContent);
         Assert.Empty(home.QuerySelectorAll("#cruelty img"));
 

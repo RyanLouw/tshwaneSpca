@@ -54,7 +54,9 @@ Phase 1B supports Resend over HTTPS. The production default disables email-backe
 
 Change recipients in the hosting configuration and restart the site. The app uses the visitor's email as the reply address. Local form submissions go to Mailpit using the addresses in `appsettings.Development.json` unless overridden.
 
-`Mail__ComplaintTo` controls the **Send a cruelty complaint** button. It opens the visitor's email app. `Mail__VolunteerApplicationsTo` and `Mail__VolunteerApplicationsCc` control the separate email button for signed volunteer PDFs. Both buttons have defaults from the supplied materials and work independently of the site's mail provider. Set `Mail__VolunteerApplicationsCc` to an empty string to omit the CC.
+Each cruelty complaint or signed volunteer application can open a prefilled draft in Gmail, Outlook.com, or the visitor's email app. The visitor signs into their own email account, attaches any signed volunteer PDFs, and sends the draft. These drafts work independently of the site's mail provider.
+
+`Mail__ComplaintTo` sets the complaint destination. `Mail__VolunteerApplicationsTo` and `Mail__VolunteerApplicationsCc` set the destinations for signed volunteer PDFs. Defaults come from the supplied materials. Set `Mail__VolunteerApplicationsCc` to an empty string to omit the CC.
 
 The website saves the enquiry or subscription and queues mail in the same database transaction. Failed mail retries with backoff. Resend requests include a stable idempotency key. If SMTP accepts a message immediately before a process crash, a retry can deliver it twice. Monitor queue failures and agree on data retention before launch. Keep newsletter preference query strings and request bodies out of reverse-proxy logs. For production behind a reverse proxy, configure trusted client IP forwarding at deployment so abuse limits apply per visitor.
 

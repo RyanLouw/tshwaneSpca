@@ -24,10 +24,9 @@ public sealed class MailSettings
     public string VolunteerApplicationsTo { get; init; } = "admin@spcapta.org.za";
     public string? VolunteerApplicationsCc { get; init; } = "chairperson@spcapta.org.za";
 
-    public string ComplaintLink => $"mailto:{EncodeMailbox(ComplaintTo)}?subject=Animal%20Cruelty%20Complaint";
-
-    public string VolunteerApplicationLink => $"mailto:{EncodeMailbox(VolunteerApplicationsTo)}?subject=Completed%20Volunteer%20Application"
-        + (string.IsNullOrWhiteSpace(VolunteerApplicationsCc) ? "" : $"&cc={Uri.EscapeDataString(VolunteerApplicationsCc)}");
+    public EmailDraft ComplaintDraft => new(ComplaintTo, "Animal Cruelty Complaint");
+    public EmailDraft VolunteerApplicationDraft =>
+        new(VolunteerApplicationsTo, "Completed Volunteer Application", VolunteerApplicationsCc);
 
     public string SmtpHost { get; init; } = "localhost";
     public int SmtpPort { get; init; } = 1025;
@@ -60,9 +59,6 @@ public sealed class MailSettings
             _ => false
         };
     }
-
-    private static string EncodeMailbox(string address) =>
-        Uri.EscapeDataString(address).Replace("%40", "@", StringComparison.Ordinal);
 
     public static bool IsEmail(string? value) =>
         MailAddress.TryCreate(value, out var address) &&
