@@ -66,6 +66,18 @@ dotnet tool restore
 dotnet ef migrations add NameOfChange --project TshwaneSPCA.Data --startup-project TshwaneSPCA.MigrationService
 ```
 
+## Test a real enquiry with Resend on Windows
+
+Use the inbox you signed up to Resend with. The Resend test sender `onboarding@resend.dev` can deliver to that inbox before you verify a sending domain.
+
+From PowerShell in the repository folder, run:
+
+```powershell
+.\scripts\Test-ResendEnquiry.ps1 -TestInbox 'your-resend-account-email@example.com'
+```
+
+Accept the local HTTPS certificate prompt if shown and enter the API key at the masked prompt. Open `https://localhost:5443/enquiries/general`, submit an enquiry with sample information, and check your inbox and the Resend dashboard. This sends through the same Resend API used by the live app. The script uses its own temporary SQLite database and sends enquiry notifications to the test inbox. Keep the script running while checking delivery. The key is passed to the running processes and cleared from the test session when the script ends.
+
 ## Production email configuration
 
 Phase 1B supports Resend over HTTPS. The production default disables email-backed forms until configured. Set these values in the hosting environment after the SPCA approves routing and consent wording:
