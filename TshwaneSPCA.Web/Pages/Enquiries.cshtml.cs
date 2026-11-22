@@ -2,8 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using TshwaneSPCA.Data;
 using TshwaneSPCA.Web.PublicServices;
 
@@ -12,7 +10,7 @@ namespace TshwaneSPCA.Web.Pages;
 [EnableRateLimiting("public-form")]
 [RequestSizeLimit(16_384)]
 [RequestFormLimits(ValueLengthLimit = 4096, ValueCountLimit = 16)]
-public sealed class EnquiriesModel(PublicData database, MailSettings mail, OutboxPayload outbox) : PageModel
+public sealed class EnquiriesModel(MailSettings mail, EnquiryQueue queue) : PageModel
 {
     [BindProperty]
     public EnquiryInput Form { get; set; } = new();
@@ -62,20 +60,7 @@ public sealed class EnquiriesModel(PublicData database, MailSettings mail, Outbo
             ReceivedAt = now
         };
 
-        database.Enquiries.Add(enquiry);
-        database.Outbox.Add(outbox.Create(new EmailMessage(recipient, $"Tshwane SPCA: {Title}",
-            $"Name: {enquiry.Name}\nEmail: {enquiry.Email}\nPhone: {enquiry.Phone}\n\n{enquiry.Message}",
-            enquiry.Email), now));
-
-        try
-        {
-            await database.SaveChangesAsync(cancellationToken);
-        }
-        catch (DbUpdateException exception) when (exception.InnerException is SqliteException { SqliteExtendedErrorCode: 1555 })
-        {
-            // The same form submission was already saved and queued.
-        }
-
+        await queue.SaveAsync(enquiry, recipient, $"Tshwane SPCA: {Title}", cancellationToken);
         return Acknowledge();
     }
 

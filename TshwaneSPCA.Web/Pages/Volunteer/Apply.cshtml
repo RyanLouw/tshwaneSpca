@@ -1,0 +1,45 @@
+@page "/volunteer/apply"
+@model TshwaneSPCA.Web.Pages.Volunteer.ApplyModel
+
+<main id="main-content" class="section" tabindex="-1">
+    <div class="wrap public-service">
+        <a href="/#volunteer-forms">← Download the volunteer forms</a>
+        <h1>Submit your volunteer application</h1>
+        @if (Model.ApplicationReceived)
+        {
+            <p class="alert" role="status">Your application was received. The volunteer team can reply to the email address you supplied.</p>
+        }
+        else if (Model.Enabled)
+        {
+            <form class="card public-form" method="post" enctype="multipart/form-data" asp-page="/Volunteer/Apply">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div asp-validation-summary="All" class="form-errors" role="alert"></div>
+                }
+                <input asp-for="Form.RequestId" type="hidden" />
+                <label asp-for="Form.Name">Full name</label>
+                <input asp-for="Form.Name" autocomplete="name" maxlength="100" required />
+                <label asp-for="Form.Email">Email address</label>
+                <input asp-for="Form.Email" type="email" autocomplete="email" maxlength="254" required />
+                <label asp-for="Form.Documents">Signed application PDFs</label>
+                <input asp-for="Form.Documents" type="file" accept=".pdf,application/pdf" multiple required aria-describedby="volunteer-pdf-help" />
+                <small id="volunteer-pdf-help">Attach up to three PDFs, with a combined size of 5 MB or less. If you need to correct the form, select your files again before submitting.</small>
+                <label asp-for="Form.Message">Additional information (optional)</label>
+                <textarea asp-for="Form.Message" maxlength="3000" rows="4"></textarea>
+                <div hidden>
+                    <label asp-for="Form.Website">Leave this blank</label>
+                    <input asp-for="Form.Website" autocomplete="off" tabindex="-1" />
+                </div>
+                <label class="form-consent">
+                    <input asp-for="Form.Consent" required />
+                    I agree that Tshwane SPCA may use my contact details and attached forms to process my application.
+                </label>
+                <button class="btn blue" type="submit">Submit application</button>
+            </form>
+        }
+        else
+        {
+            <p>Online applications are currently unavailable. Please contact your branch directly.</p>
+        }
+    </div>
+</main>

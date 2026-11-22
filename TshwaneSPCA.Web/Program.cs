@@ -22,6 +22,7 @@ if (!mail.IsValid())
     throw new InvalidOperationException("Invalid Mail settings. See the setup instructions.");
 builder.Services.AddSingleton(mail);
 builder.Services.AddSingleton<OutboxPayload>();
+builder.Services.AddScoped<EnquiryQueue>();
 if (mail.Mode == "Smtp")
     builder.Services.AddScoped<IEmailSender, MailpitSender>();
 if (mail.Mode == "Resend")

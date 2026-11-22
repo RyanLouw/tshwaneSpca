@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using AngleSharp.Html.Parser;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -116,21 +117,15 @@ public sealed class Phase1bTests(PublicServicesFactory factory) : IClassFixture<
         var complaint = Assert.Single(home.QuerySelectorAll("#cruelty a[href^='mailto:']"));
         Assert.Equal("Use my email app", complaint.TextContent);
         var mail = routingFactory.Services.GetRequiredService<MailSettings>();
-        foreach (var (section, draft) in new[]
+        var draft = mail.ComplaintDraft;
+        var gmail = Assert.Single(home.QuerySelectorAll("#cruelty a[href^='https://mail.google.com/']"));
+        var outlook = Assert.Single(home.QuerySelectorAll("#cruelty a[href^='https://outlook.live.com/']"));
+        foreach (var (link, subjectParameter) in new[] { (gmail, "su"), (outlook, "subject") })
         {
-            ("#cruelty", mail.ComplaintDraft), ("#volunteer-forms", mail.VolunteerApplicationDraft)
-        })
-        {
-            var gmail = Assert.Single(home.QuerySelectorAll($"{section} a[href^='https://mail.google.com/']"));
-            var outlook = Assert.Single(home.QuerySelectorAll($"{section} a[href^='https://outlook.live.com/']"));
-            foreach (var (link, subjectParameter) in new[] { (gmail, "su"), (outlook, "subject") })
-            {
-                var query = QueryHelpers.ParseQuery(new Uri(link.GetAttribute("href")!).Query);
-                Assert.Equal(draft.To, query["to"].ToString());
-                Assert.Equal(draft.Subject, query[subjectParameter].ToString());
-                Assert.Equal(draft.Cc ?? "", query.GetValueOrDefault("cc").ToString());
-                Assert.Equal("_blank", link.GetAttribute("target"));
-            }
+            var query = QueryHelpers.ParseQuery(new Uri(link.GetAttribute("href")!).Query);
+            Assert.Equal(draft.To, query["to"].ToString());
+            Assert.Equal(draft.Subject, query[subjectParameter].ToString());
+            Assert.Equal("_blank", link.GetAttribute("target"));
         }
         Assert.DoesNotContain("@", home.QuerySelector("#cruelty")!.TextContent);
         Assert.Empty(home.QuerySelectorAll("#cruelty img"));
@@ -155,6 +150,51 @@ public sealed class Phase1bTests(PublicServicesFactory factory) : IClassFixture<
         {
             var message = await routingFactory.Mail.WaitForAsync(mail => mail.ReplyTo == $"{inbox}-visitor@example.test");
             Assert.Equal($"{inbox}@example.test", message.To);
+        }
+    }
+
+    [Fact]
+    public async Task SignedVolunteerFormsUploadThroughTheSiteAndReachTheConfiguredInbox()
+    {
+        await using var applicationFactory = new PublicServicesFactory();
+        await applicationFactory.InitializeDatabaseAsync();
+        using var client = applicationFactory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
+        const string route = "/volunteer/apply";
+        var home = await new HtmlParser().ParseDocumentAsync(await client.GetStringAsync("/"));
+        Assert.NotNull(home.QuerySelector($"#volunteer-forms a[href='{route}']"));
+        Assert.Empty(home.QuerySelectorAll("#volunteer-forms a[href^='mailto:'], #volunteer-forms a[href^='https:']"));
+
+        var form = await ReadFormAsync(client, route);
+        form["Form.Name"] = "Volunteer Test";
+        form["Form.Email"] = "applicant@example.test";
+        form["Form.Consent"] = "true";
+        using var invalid = await PostApplicationAsync("Not a PDF"u8.ToArray());
+        Assert.Contains("Attach completed PDF files only", await invalid.Content.ReadAsStringAsync());
+
+        var pdf = await client.GetByteArrayAsync("/documents/community-hours-application.pdf");
+        using var submitted = await PostApplicationAsync(pdf);
+        Assert.Equal(HttpStatusCode.Redirect, submitted.StatusCode);
+        Assert.Contains("Your application was received", await client.GetStringAsync(submitted.Headers.Location));
+
+        var received = await applicationFactory.Mail.WaitForAsync(message => message.ReplyTo == form["Form.Email"]);
+        Assert.Equal("volunteer-applications@example.test", received.To);
+        Assert.Equal("volunteer-coordinator@example.test", received.Cc);
+        var attachment = Assert.Single(received.Attachments!);
+        Assert.Equal("volunteer-application-1.pdf", attachment.FileName);
+        Assert.Equal(pdf, attachment.Content);
+
+        async Task<HttpResponseMessage> PostApplicationAsync(byte[] content)
+        {
+            using var fields = new MultipartFormDataContent();
+            foreach (var (name, value) in form)
+                fields.Add(new StringContent(value), name);
+            var file = new ByteArrayContent(content);
+            file.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            fields.Add(file, "Form.Documents", "signed-form.pdf");
+            return await client.PostAsync(route, fields);
         }
     }
 

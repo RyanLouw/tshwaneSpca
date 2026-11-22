@@ -25,8 +25,6 @@ public sealed class MailSettings
     public string? VolunteerApplicationsCc { get; init; } = "chairperson@spcapta.org.za";
 
     public EmailDraft ComplaintDraft => new(ComplaintTo, "Animal Cruelty Complaint");
-    public EmailDraft VolunteerApplicationDraft =>
-        new(VolunteerApplicationsTo, "Completed Volunteer Application", VolunteerApplicationsCc);
 
     public string SmtpHost { get; init; } = "localhost";
     public int SmtpPort { get; init; } = 1025;
@@ -65,7 +63,11 @@ public sealed class MailSettings
         string.Equals(value, address.Address, StringComparison.Ordinal);
 }
 
-public sealed record EmailMessage(string To, string Subject, string Text, string? ReplyTo = null);
+public sealed record EmailMessage(
+    string To, string Subject, string Text, string? ReplyTo = null, string? Cc = null,
+    IReadOnlyList<EmailAttachment>? Attachments = null);
+
+public sealed record EmailAttachment(string FileName, byte[] Content);
 
 public interface IEmailSender
 {
@@ -80,6 +82,12 @@ public sealed class MailpitSender(MailSettings settings) : IEmailSender
         using var mail = new MailMessage(settings.From, message.To, message.Subject, message.Text);
         if (message.ReplyTo is not null)
             mail.ReplyToList.Add(message.ReplyTo);
+        if (!string.IsNullOrEmpty(message.Cc))
+            mail.CC.Add(message.Cc);
+        foreach (var attachment in message.Attachments ?? [])
+            mail.Attachments.Add(new Attachment(new MemoryStream(attachment.Content, writable: false),
+                attachment.FileName, "application/pdf"));
+
         await client.SendMailAsync(mail, cancellationToken);
     }
 }
@@ -97,7 +105,13 @@ public sealed class ResendSender(HttpClient client, MailSettings settings) : IEm
             to = new[] { message.To },
             subject = message.Subject,
             text = message.Text,
-            reply_to = message.ReplyTo
+            reply_to = message.ReplyTo,
+            cc = string.IsNullOrEmpty(message.Cc) ? null : new[] { message.Cc },
+            attachments = message.Attachments?.Select(attachment => new
+            {
+                filename = attachment.FileName,
+                content = Convert.ToBase64String(attachment.Content)
+            })
         }, options: new JsonSerializerOptions
         {
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
@@ -186,7 +200,9 @@ public sealed class OutboxWorker(IServiceScopeFactory scopes, ILogger<OutboxWork
                 .SetProperty(row => row.NextAttemptAt, now + delay)
                 .SetProperty(row => row.LeaseId, (Guid?)null)
                 .SetProperty(row => row.LeaseUntil, (long?)null)
-                .SetProperty(row => row.FailedAt, stop ? now : null), cancellationToken);
+                .SetProperty(row => row.FailedAt, stop ? now : null)
+                .SetProperty(row => row.Payload, row => stop && row.ExpiresAt != null ? "" : row.Payload),
+                cancellationToken);
             logger.LogWarning("Email queue item {MessageId} failed on attempt {Attempt}.", item.Id, attempts);
             return true;
         }
