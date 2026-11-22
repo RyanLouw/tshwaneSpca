@@ -15,6 +15,8 @@ dotnet run --project TshwaneSPCA.AppHost --no-build
 
 Open the Aspire dashboard URL printed by the AppHost, then open the **web** resource’s HTTP endpoint on port 5081. Aspire starts the web project and checks its `/health` endpoint. This preview uses local HTTP and needs no containers, database, credentials or mail server.
 
+In Visual Studio, set `TshwaneSPCA.AppHost` as the startup project and press F5 to open the dashboard. To open the website directly with F5, set `TshwaneSPCA.Web` as the startup project. If the browser stays closed, open the address shown under `Now listening on` in the Output window while the process is running.
+
 To run just the public site:
 
 ```sh
