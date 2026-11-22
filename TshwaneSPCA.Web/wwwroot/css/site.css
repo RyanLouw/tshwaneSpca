@@ -371,30 +371,6 @@ h3 {
   padding: 6px 9px;
   margin-left: 5px;
 }
-.steps {
-  counter-reset: steps;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-.step {
-  background: white;
-  border: 1px solid #dce7f6;
-  border-radius: 18px;
-  padding: 25px;
-}
-.step:before {
-  counter-increment: steps;
-  content: counter(steps);
-  display: grid;
-  place-items: center;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  background: #0c56b5;
-  color: white;
-  font-weight: 900;
-}
 .feature {
   background: linear-gradient(110deg, #082e77, #145bb5);
   color: #fff;
@@ -540,8 +516,7 @@ h3 {
   }
   .intro-grid,
   .grid3,
-  .gallery,
-  .steps {
+  .gallery {
     grid-template-columns: 1fr;
   }
   .gallery .poster {
@@ -1179,9 +1154,6 @@ h3 {
 }
 
 /* Styles moved from the reference markup */
-.adoption-steps {
-  grid-template-columns: 1fr;
-}
 .adoption-fees-panel {
   margin-top: 22px;
   padding: 22px;
@@ -1318,4 +1290,162 @@ body:has(.lightbox[open]) {
   html {
     scroll-behavior: auto;
   }
+}
+
+.adoption-roadmap {
+  --card-width: 70%;
+  --route-gap: 68px;
+  --route-color: #b68126;
+  --route-radius: 24px;
+  display: grid;
+  gap: var(--route-gap);
+  list-style: none;
+  margin: 24px 0 32px;
+  padding: 0;
+}
+
+.adoption-stop {
+  position: relative;
+}
+
+.adoption-stop-card {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  width: var(--card-width);
+  overflow: hidden;
+  background: white;
+  border: 1px solid #dce7f6;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+.adoption-stop:nth-child(even) .adoption-stop-card {
+  margin-inline-start: auto;
+}
+
+/* Two rounded turns trace an S from one card's centre to the next. */
+.adoption-stop:not(:last-child)::before,
+.adoption-stop:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  width: calc((100% - var(--card-width)) / 2 + 2px);
+  height: calc(var(--route-gap) / 2);
+  border: 3px solid var(--route-color);
+  pointer-events: none;
+}
+
+.adoption-stop:nth-child(odd):not(:last-child)::before {
+  top: 100%;
+  height: calc(var(--route-gap) / 2 + 3px);
+  left: calc(var(--card-width) / 2);
+  border-width: 0 0 3px 3px;
+  border-bottom-left-radius: var(--route-radius);
+}
+
+.adoption-stop:nth-child(odd):not(:last-child)::after {
+  top: calc(100% + var(--route-gap) / 2);
+  right: calc(var(--card-width) / 2);
+  border-width: 3px 3px 0 0;
+  border-top-right-radius: var(--route-radius);
+}
+
+.adoption-stop:nth-child(even):not(:last-child)::before {
+  top: 100%;
+  height: calc(var(--route-gap) / 2 + 3px);
+  right: calc(var(--card-width) / 2);
+  border-width: 0 3px 3px 0;
+  border-bottom-right-radius: var(--route-radius);
+}
+
+.adoption-stop:nth-child(even):not(:last-child)::after {
+  top: calc(100% + var(--route-gap) / 2);
+  left: calc(var(--card-width) / 2);
+  border-width: 3px 0 0 3px;
+  border-top-left-radius: var(--route-radius);
+}
+
+.adoption-stop-media {
+  position: relative;
+  min-height: 225px;
+}
+
+.adoption-stop-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+}
+
+.adoption-stop:first-child .adoption-stop-photo {
+  object-position: center 25%;
+}
+
+.adoption-stop-copy {
+  padding: clamp(18px, 3vw, 32px);
+}
+
+.adoption-stop-number {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 900;
+}
+
+.adoption-stop-copy h4 {
+  margin: 12px 0 8px;
+  color: var(--navy);
+  font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+  line-height: 1.2;
+}
+
+.adoption-stop-copy p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.adoption-poster {
+  margin-top: 22px;
+}
+
+.adoption-poster summary {
+  width: fit-content;
+  color: var(--navy);
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.adoption-poster .poster-card {
+  max-width: 660px;
+  margin: 14px 0 0;
+}
+
+@media (max-width: 850px) {
+  .adoption-roadmap {
+    --card-width: 88%;
+    --route-gap: 52px;
+  }
+}
+
+@media (max-width: 600px) {
+  .adoption-roadmap {
+    --card-width: 94%;
+    --route-gap: 44px;
+    --route-radius: 9px;
+  }
+
+  .adoption-stop-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .adoption-stop-media {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+
 }
