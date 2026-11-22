@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="TshwaneSPCA.AppHost/TshwaneSPCA.AppHost.csproj" />
+  <Project Path="TshwaneSPCA.ServiceDefaults/TshwaneSPCA.ServiceDefaults.csproj" />
+  <Project Path="TshwaneSPCA.Tests/TshwaneSPCA.Tests.csproj" />
+  <Project Path="TshwaneSPCA.Web/TshwaneSPCA.Web.csproj" />
+</Solution>

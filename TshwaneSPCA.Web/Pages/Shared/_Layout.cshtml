@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#082e77" />
+    <meta name="description" content="Find out about adoptions, clinics, donations, volunteering and animal welfare at the Tshwane SPCA." />
+    <title>Tshwane SPCA | Compassion • Care • Second Chances</title>
+    <link rel="icon" href="/assets/tshwane-spca-logo.png" />
+    <link rel="stylesheet" href="/css/site.css" />
+    <script src="/js/site.js" type="module"></script>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    @await Html.PartialAsync("_Header")
+    @RenderBody()
+    @await Html.PartialAsync("_Footer")
+    @await Html.PartialAsync("_PosterDialog")
+</body>
+</html>

@@ -1,0 +1,342 @@
+[
+  {
+    "section": "header",
+    "element": "img[src]",
+    "label": "DBV SPCA Tshwane logo",
+    "sourceMime": "image/png",
+    "sourceUriSha256": "d3e379a977c96058551be319bdda898712eb20b64328f041d33d1111def074de",
+    "sourceContentSha256": "5b0c347c4718c2bb9585583f3e9f895137dcbe5dea60a0162cdd2a7f70aaad67",
+    "url": "/assets/tshwane-spca-logo.png",
+    "contentSha256": "5b0c347c4718c2bb9585583f3e9f895137dcbe5dea60a0162cdd2a7f70aaad67"
+  },
+  {
+    "section": "header",
+    "element": "img[src]",
+    "label": "Sponsor a Kennel poster preview",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "9b0f2a5a7424c4599f3b2626a71fb3a6831c57eb1d202d67d697f1631ff1f4bd",
+    "sourceContentSha256": "6b5311b758dac60cd72c1c147ae8ae28bdde89eaca96f0ee0f3949e63a723285",
+    "url": "/assets/sponsor-a-kennel-preview.jpg",
+    "contentSha256": "6b5311b758dac60cd72c1c147ae8ae28bdde89eaca96f0ee0f3949e63a723285"
+  },
+  {
+    "section": "home",
+    "element": "img[src]",
+    "label": "Official DBV SPCA Tshwane logo",
+    "sourceMime": "image/png",
+    "sourceUriSha256": "bb309ecdfbbb0e8b8ae63c5edc48fc188a07815b08e8b35ed0df7d46dcfb2d19",
+    "sourceContentSha256": "050265429e92f8866e08f10aed4c475bd3354ee6e831dce8e66ceca689b919c2",
+    "url": "/assets/tshwane-spca-hero-logo.png",
+    "contentSha256": "050265429e92f8866e08f10aed4c475bd3354ee6e831dce8e66ceca689b919c2"
+  },
+  {
+    "section": "home",
+    "element": "img[src]",
+    "label": "Fluffy tabby cat",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "cd30eca23d14a0571ee401532b1788eda831a6111e475465d332fd2edacc4376",
+    "sourceContentSha256": "8e7942d449701f630927a7bce1e683104bc68fb513b275583c2df951f173b1d5",
+    "url": "/assets/hero-tabby-cat.jpg",
+    "contentSha256": "8e7942d449701f630927a7bce1e683104bc68fb513b275583c2df951f173b1d5"
+  },
+  {
+    "section": "home",
+    "element": "img[src]",
+    "label": "Small black and white dog",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "7ae428c7f3808e7a93226ae8d8c6aeb15091c17a9b4beb8d7eb73c1f3b32c967",
+    "sourceContentSha256": "0913ea28a9832f4ad1c3eb98ea910d2113d7aa0bc0ce03df371b902c854f4792",
+    "url": "/assets/hero-black-and-white-dog.jpg",
+    "contentSha256": "0913ea28a9832f4ad1c3eb98ea910d2113d7aa0bc0ce03df371b902c854f4792"
+  },
+  {
+    "section": "home",
+    "element": "img[src]",
+    "label": "White and brown dog",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "8b9498cc27f3f673c55b0a8452e7e7e31b09bdf39d32cd96b375a7cfa361773d",
+    "sourceContentSha256": "57cdd46fe646122d4abbb967041a8a130c7c53f8e701dc1be1a46e7a0bb66811",
+    "url": "/assets/hero-white-and-brown-dog.jpg",
+    "contentSha256": "57cdd46fe646122d4abbb967041a8a130c7c53f8e701dc1be1a46e7a0bb66811"
+  },
+  {
+    "section": "home",
+    "element": "img[src]",
+    "label": "Red and white husky",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "0b40dfb39bc1b0ffd3da907337fc97d497784278bb104c854301737f391016e3",
+    "sourceContentSha256": "e13356427e08afadbab421833930704da30cff4536134cd517e6a8bf5e59066d",
+    "url": "/assets/hero-husky.jpg",
+    "contentSha256": "e13356427e08afadbab421833930704da30cff4536134cd517e6a8bf5e59066d"
+  },
+  {
+    "section": "adoptions",
+    "element": "img[src]",
+    "label": "Tshwane SPCA adoption poster with Waltloo and Centurion branch contact information",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "3958620b4d0df2167ac8a304ca912c180e222c1076e7233de1d32e30cb336ce8",
+    "sourceContentSha256": "f4f67e14d10404acb34f8030c64ca37f0a650308a263c14aadbdbd1bc2652218",
+    "url": "/assets/adoption-branch-information.jpg",
+    "contentSha256": "f4f67e14d10404acb34f8030c64ca37f0a650308a263c14aadbdbd1bc2652218"
+  },
+  {
+    "section": "adoptions",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "3958620b4d0df2167ac8a304ca912c180e222c1076e7233de1d32e30cb336ce8",
+    "sourceContentSha256": "f4f67e14d10404acb34f8030c64ca37f0a650308a263c14aadbdbd1bc2652218",
+    "url": "/assets/adoption-branch-information.jpg",
+    "contentSha256": "f4f67e14d10404acb34f8030c64ca37f0a650308a263c14aadbdbd1bc2652218"
+  },
+  {
+    "section": "process",
+    "element": "img[src]",
+    "label": "Tshwane SPCA adoption process information poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "7dd57d6a569b0ac2df95fd55108b23c325f2214d1f19ac7b07a7bf5551b105e4",
+    "sourceContentSha256": "7d749fd72b239684377a7ae391494a30d9c09f75d8c4e076b300967354e5fdd9",
+    "url": "/assets/adoption-process.jpg",
+    "contentSha256": "7d749fd72b239684377a7ae391494a30d9c09f75d8c4e076b300967354e5fdd9"
+  },
+  {
+    "section": "process",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "7dd57d6a569b0ac2df95fd55108b23c325f2214d1f19ac7b07a7bf5551b105e4",
+    "sourceContentSha256": "7d749fd72b239684377a7ae391494a30d9c09f75d8c4e076b300967354e5fdd9",
+    "url": "/assets/adoption-process.jpg",
+    "contentSha256": "7d749fd72b239684377a7ae391494a30d9c09f75d8c4e076b300967354e5fdd9"
+  },
+  {
+    "section": "happy",
+    "element": "img[src]",
+    "label": "Tshwane SPCA adoption celebration with a dog",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "7ec984ba9ad7bcde75f86c69e6f3936e2e30146939c08a5a9a2036b0d19a6582",
+    "sourceContentSha256": "e90c02dbc37b265f99aa0a7cca50f308c8d26e0b9a9aa1d7527c8bf9f343001b",
+    "url": "/assets/adoption-celebration.jpg",
+    "contentSha256": "e90c02dbc37b265f99aa0a7cca50f308c8d26e0b9a9aa1d7527c8bf9f343001b"
+  },
+  {
+    "section": "happy",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "7ec984ba9ad7bcde75f86c69e6f3936e2e30146939c08a5a9a2036b0d19a6582",
+    "sourceContentSha256": "e90c02dbc37b265f99aa0a7cca50f308c8d26e0b9a9aa1d7527c8bf9f343001b",
+    "url": "/assets/adoption-celebration.jpg",
+    "contentSha256": "e90c02dbc37b265f99aa0a7cca50f308c8d26e0b9a9aa1d7527c8bf9f343001b"
+  },
+  {
+    "section": "happy",
+    "element": "img[src]",
+    "label": "Family double adoption with two dogs",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "e08772cf1bb91643e0e951dd85c613392c0032df81226d26e82fb876fe190bea",
+    "sourceContentSha256": "efce78a9ed3c1e96a8657bfc921f7a4a3c0dbfc369ffd3c234b312ef84194be3",
+    "url": "/assets/family-double-adoption.jpg",
+    "contentSha256": "efce78a9ed3c1e96a8657bfc921f7a4a3c0dbfc369ffd3c234b312ef84194be3"
+  },
+  {
+    "section": "happy",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "e08772cf1bb91643e0e951dd85c613392c0032df81226d26e82fb876fe190bea",
+    "sourceContentSha256": "efce78a9ed3c1e96a8657bfc921f7a4a3c0dbfc369ffd3c234b312ef84194be3",
+    "url": "/assets/family-double-adoption.jpg",
+    "contentSha256": "efce78a9ed3c1e96a8657bfc921f7a4a3c0dbfc369ffd3c234b312ef84194be3"
+  },
+  {
+    "section": "happy",
+    "element": "img[src]",
+    "label": "Double adoption celebration with a family and two dogs",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "43018b126f6b5a6d595761fd9a86800a10ba1094d064357b0e2a58f75bf1db8b",
+    "sourceContentSha256": "6436aaea87d7639b50fdf5095057909c9ed94bd80b60d4a0fdc03273febe9911",
+    "url": "/assets/double-adoption-celebration.jpg",
+    "contentSha256": "6436aaea87d7639b50fdf5095057909c9ed94bd80b60d4a0fdc03273febe9911"
+  },
+  {
+    "section": "happy",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "43018b126f6b5a6d595761fd9a86800a10ba1094d064357b0e2a58f75bf1db8b",
+    "sourceContentSha256": "6436aaea87d7639b50fdf5095057909c9ed94bd80b60d4a0fdc03273febe9911",
+    "url": "/assets/double-adoption-celebration.jpg",
+    "contentSha256": "6436aaea87d7639b50fdf5095057909c9ed94bd80b60d4a0fdc03273febe9911"
+  },
+  {
+    "section": "clinic",
+    "element": "img[src]",
+    "label": "Tshwane SPCA Waltloo and Centurion clinics are open. Contact Waltloo at 012 803 5219 or Centurion at 012 664 5644.",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "54aef69096983811b486890a08745768c4e60b5eea27657d90588c8ab06d5015",
+    "sourceContentSha256": "e64786899e47b17108e5be775df0dc5d2f72659f61c942a14f975ddff4c9461f",
+    "url": "/assets/clinic-opening-banner.jpg",
+    "contentSha256": "e64786899e47b17108e5be775df0dc5d2f72659f61c942a14f975ddff4c9461f"
+  },
+  {
+    "section": "clinic",
+    "element": "img[src]",
+    "label": "Tshwane SPCA clinic price list poster",
+    "sourceMime": "image/png",
+    "sourceUriSha256": "783d015a0628d06fcaccffcebd7e55627e75e5778204b77aab8fbd4d577e7f24",
+    "sourceContentSha256": "a53c2ffe74ceb07944a68570f8cbfea4e1ab5703a58c2448378be9468fdad208",
+    "url": "/assets/clinic-price-list.png",
+    "contentSha256": "a53c2ffe74ceb07944a68570f8cbfea4e1ab5703a58c2448378be9468fdad208"
+  },
+  {
+    "section": "clinic",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/png",
+    "sourceUriSha256": "783d015a0628d06fcaccffcebd7e55627e75e5778204b77aab8fbd4d577e7f24",
+    "sourceContentSha256": "a53c2ffe74ceb07944a68570f8cbfea4e1ab5703a58c2448378be9468fdad208",
+    "url": "/assets/clinic-price-list.png",
+    "contentSha256": "a53c2ffe74ceb07944a68570f8cbfea4e1ab5703a58c2448378be9468fdad208"
+  },
+  {
+    "section": "sponsor-kennel",
+    "element": "img[src]",
+    "label": "Tshwane SPCA Sponsor a Kennel poster: R200 per month, 18A certificate, sponsorship and banking details",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "9b0f2a5a7424c4599f3b2626a71fb3a6831c57eb1d202d67d697f1631ff1f4bd",
+    "sourceContentSha256": "6b5311b758dac60cd72c1c147ae8ae28bdde89eaca96f0ee0f3949e63a723285",
+    "url": "/assets/sponsor-a-kennel-preview.jpg",
+    "contentSha256": "6b5311b758dac60cd72c1c147ae8ae28bdde89eaca96f0ee0f3949e63a723285"
+  },
+  {
+    "section": "sponsor-kennel",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "9b0f2a5a7424c4599f3b2626a71fb3a6831c57eb1d202d67d697f1631ff1f4bd",
+    "sourceContentSha256": "6b5311b758dac60cd72c1c147ae8ae28bdde89eaca96f0ee0f3949e63a723285",
+    "url": "/assets/sponsor-a-kennel-preview.jpg",
+    "contentSha256": "6b5311b758dac60cd72c1c147ae8ae28bdde89eaca96f0ee0f3949e63a723285"
+  },
+  {
+    "section": "banking",
+    "element": "img[src]",
+    "label": "Tshwane SPCA banking details donation poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "e6b6fbf36f533fc682b7a97d216381233b1b57a033a985af21a62215a663d017",
+    "sourceContentSha256": "286418732e067b45329afc1be4e8f8f8c289dca9f94de7f662982732451fa87f",
+    "url": "/assets/donation-banking-details.jpg",
+    "contentSha256": "286418732e067b45329afc1be4e8f8f8c289dca9f94de7f662982732451fa87f"
+  },
+  {
+    "section": "banking",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "e6b6fbf36f533fc682b7a97d216381233b1b57a033a985af21a62215a663d017",
+    "sourceContentSha256": "286418732e067b45329afc1be4e8f8f8c289dca9f94de7f662982732451fa87f",
+    "url": "/assets/donation-banking-details.jpg",
+    "contentSha256": "286418732e067b45329afc1be4e8f8f8c289dca9f94de7f662982732451fa87f"
+  },
+  {
+    "section": "cruelty",
+    "element": "img[src]",
+    "label": "Animal cruelty complaints reporting poster with email address",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "965a63114ef1ff353d06310b9053045998dbb4be2aa266207cd7a7b14c80736a",
+    "sourceContentSha256": "42f3920955c3ae20e709bcba77789d6a84be29c4508e459b56defca86243f63b",
+    "url": "/assets/animal-cruelty-reporting.jpg",
+    "contentSha256": "42f3920955c3ae20e709bcba77789d6a84be29c4508e459b56defca86243f63b"
+  },
+  {
+    "section": "cruelty",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "965a63114ef1ff353d06310b9053045998dbb4be2aa266207cd7a7b14c80736a",
+    "sourceContentSha256": "42f3920955c3ae20e709bcba77789d6a84be29c4508e459b56defca86243f63b",
+    "url": "/assets/animal-cruelty-reporting.jpg",
+    "contentSha256": "42f3920955c3ae20e709bcba77789d6a84be29c4508e459b56defca86243f63b"
+  },
+  {
+    "section": "emergency",
+    "element": "img[src]",
+    "label": "Tshwane SPCA emergency numbers for Waltloo and Centurion branches",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "13452f415288287b64f6e413c5ff1a7371f7adf5e08e4ade038c3fd7c2377f14",
+    "sourceContentSha256": "9d8d0d9cc28e671c2965d760e60bf05a10b49ddf67988696890509e017fdc6a3",
+    "url": "/assets/emergency-numbers.jpg",
+    "contentSha256": "9d8d0d9cc28e671c2965d760e60bf05a10b49ddf67988696890509e017fdc6a3"
+  },
+  {
+    "section": "emergency",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "13452f415288287b64f6e413c5ff1a7371f7adf5e08e4ade038c3fd7c2377f14",
+    "sourceContentSha256": "9d8d0d9cc28e671c2965d760e60bf05a10b49ddf67988696890509e017fdc6a3",
+    "url": "/assets/emergency-numbers.jpg",
+    "contentSha256": "9d8d0d9cc28e671c2965d760e60bf05a10b49ddf67988696890509e017fdc6a3"
+  },
+  {
+    "section": "volunteer",
+    "element": "img[src]",
+    "label": "Volunteer spending time with a dog and a cat",
+    "sourceMime": "image/png",
+    "sourceUriSha256": "40cb1ed22b723702f4999bda32f72bb9f446de7f010c2f63a54b54f3df4b501c",
+    "sourceContentSha256": "cd71674a46008ee84a15eb1c1262b0583fe92b2b903d942b2075fe4a9408aca9",
+    "url": "/assets/volunteer-with-pets.png",
+    "contentSha256": "cd71674a46008ee84a15eb1c1262b0583fe92b2b903d942b2075fe4a9408aca9"
+  },
+  {
+    "section": "volunteer",
+    "element": "a[href]",
+    "label": "\u2b07 Download PDF forms",
+    "sourceMime": "application/pdf",
+    "sourceUriSha256": "342dfe72ea418a0393579745547a5c0042ddc4cd22bc35c397f74e6ac1c6fc79",
+    "sourceContentSha256": "5ca090010ab1f747297777234f18046bade9b8fecd6273811dff2dc1b10ca4b0",
+    "url": "/documents/volunteer-forms-detailed.pdf",
+    "contentSha256": "5ca090010ab1f747297777234f18046bade9b8fecd6273811dff2dc1b10ca4b0"
+  },
+  {
+    "section": "volunteer",
+    "element": "a[href]",
+    "label": "\u2b07 Download PDF application",
+    "sourceMime": "application/pdf",
+    "sourceUriSha256": "7857e11ef0fd67909677a97d7fcc594b29926f3af9d7d062a6b20efd1325dcd0",
+    "sourceContentSha256": "98b93f742f180c0aaf50c397b6016a7da17384f74e48c0d9ca3a64efda2957f0",
+    "url": "/documents/community-hours-application.pdf",
+    "contentSha256": "98b93f742f180c0aaf50c397b6016a7da17384f74e48c0d9ca3a64efda2957f0"
+  },
+  {
+    "section": "newsletter",
+    "element": "a[href]",
+    "label": "\u2b07 Download Latest Newsletter",
+    "sourceMime": "text/html",
+    "sourceUriSha256": "a0bfde516392f9fe100714cb4ac843ee3fd913d9378b6ada63df17267fa59baf",
+    "sourceContentSha256": "5b1eb31e5ad20ba34172c0eac0ac5c6dec577a488f7e672bd6b5ef793090e021",
+    "url": "/documents/tshwane-spca-newsletter-2026-08-to-10.pdf",
+    "contentSha256": "597f853c7e933351ff6562eb55a2529a69764cf9919f6a2bc831ac9edb3f601c"
+  },
+  {
+    "section": "charity-shop",
+    "element": "img[src]",
+    "label": "Waltloo Charity Shop and Bookshop poster with details and opening hours",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "4a09d6befd81015479744806e3ae200fda13501d2d49e75f4171ce72a22e9824",
+    "sourceContentSha256": "4677d6ce77380edf0294a65fba07295f86ade35ea39ecc5c816f8c5a016f23c2",
+    "url": "/assets/charity-shop.jpg",
+    "contentSha256": "4677d6ce77380edf0294a65fba07295f86ade35ea39ecc5c816f8c5a016f23c2"
+  },
+  {
+    "section": "charity-shop",
+    "element": "a[href]",
+    "label": "\u2b07 Save poster",
+    "sourceMime": "image/jpeg",
+    "sourceUriSha256": "4a09d6befd81015479744806e3ae200fda13501d2d49e75f4171ce72a22e9824",
+    "sourceContentSha256": "4677d6ce77380edf0294a65fba07295f86ade35ea39ecc5c816f8c5a016f23c2",
+    "url": "/assets/charity-shop.jpg",
+    "contentSha256": "4677d6ce77380edf0294a65fba07295f86ade35ea39ecc5c816f8c5a016f23c2"
+  }
+]

@@ -1,0 +1,3 @@
+*.pdf binary
+# Preserve the supplied HTML and its embedded media byte for byte.
+reference/*.html binary
